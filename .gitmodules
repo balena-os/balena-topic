@@ -1,0 +1,24 @@
+[submodule "balena-yocto-scripts"]
+	path = balena-yocto-scripts
+	url = https://github.com/balena-os/balena-yocto-scripts.git
+[submodule "layers/poky"]
+	path = layers/poky
+	url = https://github.com/balena-os/poky
+[submodule "layers/meta-openembedded"]
+	path = layers/meta-openembedded
+	url = https://github.com/openembedded/meta-openembedded.git
+[submodule "layers/meta-balena"]
+	path = layers/meta-balena
+	url = https://github.com/balena-os/meta-balena.git
+[submodule "layers/meta-rust"]
+	path = layers/meta-rust
+	url = https://github.com/meta-rust/meta-rust.git
+[submodule "layers/oe-meta-go"]
+	path = layers/oe-meta-go
+	url = https://github.com/balena-os/oe-meta-go.git
+[submodule "layers/meta-xilinx"]
+	path = layers/meta-xilinx
+	url = https://github.com/Xilinx/meta-xilinx
+[submodule "layers/meta-topic"]
+	path = layers/meta-topic
+	url = https://github.com/topic-embedded-products/meta-topic.git
