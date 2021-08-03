@@ -9,7 +9,7 @@
 	url = https://github.com/openembedded/meta-openembedded.git
 [submodule "layers/meta-balena"]
 	path = layers/meta-balena
-	url = ssh://git@bitbucket.topic.nl:7999/~mike.looijmans/meta-balena.git
+	url = ssh://git@bitbucket.topic.nl:7999/BSP/meta-balena.git
 [submodule "layers/meta-rust"]
 	path = layers/meta-rust
 	url = https://github.com/meta-rust/meta-rust.git
