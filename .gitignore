@@ -1,6 +1,9 @@
 # Ignore build directory
 build*/
 
+# Created by coffee-maker.sh
+/*.coffee
+
 # Ignore shared directories
 shared-*/
 

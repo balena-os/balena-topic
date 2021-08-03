@@ -3,9 +3,9 @@ deviceTypesCommon = require '@resin.io/device-types/common'
 
 module.exports =
 	version: 1
-	slug: 'tdkzu6'
-	aliases: [ 'tdkzu6' ]
-	name: 'TOPIC tdkzu6'
+	slug: 'MACHINE'
+	aliases: [ 'MACHINE' ]
+	name: 'TOPIC MACHINE'
 	arch: 'aarch64'
 	state: 'released'
 
@@ -19,11 +19,11 @@ module.exports =
 	options: [ networkOptions.group ]
 
 	yocto:
-		machine: 'tdkzu6'
+		machine: 'MACHINE'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
 		version: 'yocto-zeus'
-		deployArtifact: 'balena-image-tdkzu6.balenaos-img'
+		deployArtifact: 'balena-image-MACHINE.balenaos-img'
 
 	configuration:
 		config:
