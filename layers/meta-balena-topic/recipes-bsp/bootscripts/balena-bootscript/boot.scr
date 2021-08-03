@@ -1,0 +1,7 @@
+echo Balena-boot script
+setenv distro_bootpart 2
+setenv devplist 2
+setenv scriptaddr 0x20010000
+setenv prefix /boot/
+setenv boot_scripts boot.scr
+run scan_dev_for_scripts
