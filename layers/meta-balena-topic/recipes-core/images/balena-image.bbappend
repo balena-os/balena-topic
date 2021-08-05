@@ -8,12 +8,14 @@ IMAGE_INSTALL += "\
 	"
 
 IMAGE_FSTYPES_zynqmp = "balenaos-img"
-TOPIC_BOOT_PARTITION_FILES = "\
+BALENA_BOOT_PARTITION_FILES_zynqmp = "\
 	boot.bin:/boot.bin u-boot.itb:/u-boot.itb \
 	balena-bootscript.scr:/boot.scr \
 	"
-BALENA_BOOT_PARTITION_FILES_zynqmp = "${TOPIC_BOOT_PARTITION_FILES}"
-BALENA_BOOT_PARTITION_FILES_zynq = "${TOPIC_BOOT_PARTITION_FILES}"
+BALENA_BOOT_PARTITION_FILES_zynq = "\
+	boot.bin:/boot.bin u-boot.img:/u-boot.img \
+	balena-bootscript.scr:/boot.scr \
+	"
 
 DEVICETREELINKS ??= "system.dtb ${DEVICETREE}"
 
