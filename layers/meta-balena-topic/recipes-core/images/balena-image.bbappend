@@ -8,6 +8,8 @@ IMAGE_INSTALL += "\
 	"
 
 IMAGE_FSTYPES_zynqmp = "balenaos-img"
+IMAGE_FSTYPES_zynq = "balenaos-img"
+
 BALENA_BOOT_PARTITION_FILES_zynqmp = "\
 	boot.bin:/boot.bin u-boot.itb:/u-boot.itb \
 	balena-bootscript.scr:/boot.scr \
