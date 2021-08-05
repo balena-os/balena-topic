@@ -11,7 +11,6 @@ inherit uboot_bootscript deploy
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 SRC_URI = "file://boot.scr"
-SRC_URI_append_tdkz10 = " file://autorun.scr"
 
 S = "${WORKDIR}"
 
