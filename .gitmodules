@@ -3,19 +3,16 @@
 	url = https://github.com/balena-os/balena-yocto-scripts.git
 [submodule "layers/poky"]
 	path = layers/poky
-	url = https://github.com/balena-os/poky
+	url = https://github.com/balena-os/poky.git
 [submodule "layers/meta-openembedded"]
 	path = layers/meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
 [submodule "layers/meta-balena"]
 	path = layers/meta-balena
-	url = ssh://git@bitbucket.topic.nl:7999/BSP/meta-balena.git
+	url = https://github.com/balena-os/meta-balena
 [submodule "layers/meta-rust"]
 	path = layers/meta-rust
 	url = https://github.com/meta-rust/meta-rust.git
-[submodule "layers/oe-meta-go"]
-	path = layers/oe-meta-go
-	url = https://github.com/balena-os/oe-meta-go.git
 [submodule "layers/meta-xilinx"]
 	path = layers/meta-xilinx
 	url = https://github.com/Xilinx/meta-xilinx
