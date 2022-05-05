@@ -2,6 +2,7 @@
 git submodule update --init --recursive
 rm -rf build/artefacts
 ./scripts/coffeemaker.sh
+./balena-yocto-scripts/build/barys --remove-build --dry-run
 ./balena-yocto-scripts/build/barys --continue --development-image
 mkdir -p build/artefacts
 for m in t*.coffee
