@@ -29,6 +29,6 @@ do_deploy () {
 }
 addtask deploy before do_build after do_compile
 
-FILES_${PN} = "/boot"
+FILES:${PN} = "/boot"
 
 do_configure[noexec] = "1"
