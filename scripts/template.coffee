@@ -5,7 +5,7 @@ module.exports =
 	version: 1
 	slug: 'MACHINE'
 	aliases: []	#[ 'MACHINE' ] FL-Removed for now, while we only support tdpzu9
-	name: 'Topic Florida Plus V1R2 (MACHINE)' #FL - If we extent this again to support more boards this 'name' might be an issue.
+	name: 'Topic Florida Plus V1R2 (MACHINE)' #FL - If we extend this again to support more boards this 'name' might be an issue.
 	arch: 'aarch64'
 	state: 'released'
 
