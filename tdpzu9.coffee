@@ -4,8 +4,8 @@ deviceTypesCommon = require '@resin.io/device-types/common'
 module.exports =
 	version: 1
 	slug: 'tdpzu9'
-	aliases: [ 'tdpzu9' ]
-	name: 'TOPIC tdpzu9'
+	aliases: []
+	name: 'Topic Florida Plus V1R2 (tdpzu9)'
 	arch: 'aarch64'
 	state: 'released'
 
