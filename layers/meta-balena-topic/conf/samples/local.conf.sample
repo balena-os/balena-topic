@@ -1,6 +1,8 @@
 # Supported machines
 MACHINE ?= "tdpzu9"
 
+LICENSE_FLAGS_WHITELIST += "xilinx" 
+
 # BALENA_STORAGE_zynq = "overlay2"
 # BALENA_STORAGE_zynqmp = "overlay2"
 
