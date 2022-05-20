@@ -19,3 +19,6 @@
 [submodule "layers/meta-topic"]
 	path = layers/meta-topic
 	url = https://github.com/topic-embedded-products/meta-topic.git
+[submodule "layers/meta-balena"]
+	path = layers/meta-balena
+	url = https://github.com/balena-os/meta-balena.git
