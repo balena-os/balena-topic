@@ -3,7 +3,6 @@ DEPENDS += "balena-bootscript"
 # Add components that we need to boot
 IMAGE_INSTALL += "\
 	bootscript \
-	kernel-devicetree \
 	${IMAGE_INSTALL_MACHINE_EXTRAS} \
 	"
 
