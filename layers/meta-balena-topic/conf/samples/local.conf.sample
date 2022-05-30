@@ -1,5 +1,5 @@
 # Supported machines
-MACHINE ?= "tdkzu6"
+MACHINE ?= "tdpzu9"
 
 # BALENA_STORAGE_zynq = "overlay2"
 # BALENA_STORAGE_zynqmp = "overlay2"
