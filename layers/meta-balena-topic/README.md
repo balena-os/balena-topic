@@ -4,4 +4,4 @@
 This repository enables building BalenaOS for chosen meta-topic machines.
 
 ## Supported machines
-* tdkzu6
+* tdpzu9

@@ -3,21 +3,12 @@ DEPENDS += "balena-bootscript"
 # Add components that we need to boot
 IMAGE_INSTALL += "\
 	bootscript \
-	kernel-devicetree \
 	${IMAGE_INSTALL_MACHINE_EXTRAS} \
 	"
 
-IMAGE_FSTYPES_zynqmp = "balenaos-img"
-IMAGE_FSTYPES_zynq = "balenaos-img"
-
-BALENA_BOOT_PARTITION_FILES_zynqmp = "\
-	boot.bin:/boot.bin u-boot.itb:/u-boot.itb \
-	balena-bootscript.scr:/boot.scr \
-	"
-BALENA_BOOT_PARTITION_FILES_zynq = "\
-	boot.bin:/boot.bin u-boot.img:/u-boot.img \
-	balena-bootscript.scr:/boot.scr \
-	"
+BALENA_EXTRA_BOOT_FILES:zynqmp = "boot.bin:/boot.bin u-boot.itb:/u-boot.itb balena-bootscript.scr:/boot.scr"
+BALENA_EXTRA_BOOT_FILES:zynq = "boot.bin:/boot.bin u-boot.img:/u-boot.img balena-bootscript.scr:/boot.scr"
+BALENA_BOOT_PARTITION_FILES:append = " ${BALENA_EXTRA_BOOT_FILES}"
 
 DEVICETREELINKS ??= "system.dtb ${DEVICETREE}"
 
