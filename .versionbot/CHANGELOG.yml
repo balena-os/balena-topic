@@ -1,1 +1,260 @@
-[]
+- commits:
+    - subject: Update balena-yocto-scripts to v1.19.8
+      hash: ae2e7bc9c1ff16d483cb42f4b0e298ec37204723
+      body: |
+        Update balena-yocto-scripts from v1.19.4 to v1.19.8
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to v1.19.8
+        changelog-entry: Update balena-yocto-scripts to v1.19.8
+        Signed-off-by: Florin Sarbu <florin@balena.io>
+        signed-off-by: Florin Sarbu <florin@balena.io>
+      author: Florin Sarbu
+      nested:
+        - commits:
+            - subject: "balena-lib: release_finalize: Do not retag phase for ESR branch patch"
+              hash: ffdcb572e75b6bddc890710a6c1e4702d08a86a7
+              body: >
+                When we patch an ESR branch, for example from v2022.1.0 to
+                v2022.1.1,
+
+                do not update the next, current, sunset ESR  phases as they remain the
+
+                same.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: balena-yocto-scripts-1.19.8
+          title: "'balena-lib: release_finalize: Do not retag phase for ESR branch patch'"
+          date: 2022-06-01T11:14:12.365Z
+        - commits:
+            - subject: "balena-lib: balena_lib_release_finalize: Pass the correct arguments"
+              hash: e28b745d4ba121b639ba79dad2377f051fe5d3e2
+              body: >
+                The balena_api_fetch_fleet_tag requires a slug as first
+                argument, not
+
+                a fleet that can contain the organization too.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-lib: Tag ESR fleets with patch independent tags"
+              hash: d51ecb6d91fe6ecf91de1ecde4fff700f7f88e67
+              body: >
+                Otherwise patch updates of ESR branches move the ESR phase when
+                they
+
+                should not. For example, if 2022.1.1 is current, 2022.1.2 is also
+
+                current and should not move 2022.1.1 to sunset.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: balena-yocto-scripts-1.19.7
+          title: "'balena-lib: Tag ESR fleets with patch independent tags'"
+          date: 2022-05-31T19:39:43.444Z
+        - commits:
+            - subject: "balena-lib: Check versions before finalizing"
+              hash: 0ae1389a69b857b466b4eef81396d5f1b6bc4ae6
+              body: >
+                Only allow to finalize draft releases that have matching semver
+                with
+
+                the device repository being deployed.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-deploy-block: Do not always finalise on deploy"
+              hash: 754833d6ef773b68a9eecafb426783ac70eb8767
+              body: >
+                Introduce a new final step after draft deployment to finalise
+                releases.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-deploy-block: Add OS version to contract"
+              hash: 2c692984079215c2c916c5e4df79e200486be1ff
+              body: >
+                If there is an OS contract, add the OS version we are building
+                for.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-deploy: Generate OS contract if not available"
+              hash: 2205c4de1dadafbf26f9f7b303b88c4da6d7710e
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-lib: Build contracts"
+              hash: b8c08faf2a86434793bcad67e063ade9754142ff
+              body: >
+                Add a function to build all OS contracts and return the one for
+                the
+
+                specified slug.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: Add generate-oscontract script
+              hash: 20894636355622ab0ded6b2e6a4f804f78961d99
+              body: |
+                This script generates OS contracts for all device types.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: balena-yocto-scripts-1.19.6
+          title: "'Configure Renovate'"
+          date: 2022-05-24T10:16:21.892Z
+        - commits:
+            - subject: "jenkins_build: Finalize when required"
+              hash: 85728e3fdc27f988af5383f320858eba5056e8d4
+              body: |
+                If the build job is set to finalize then do so.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-lib: Finalise release before tagging"
+              hash: 2243ff38f3589c021c0013477b92e6888f57eba8
+              body: >
+                This is so we can check that we are tagging the correct version
+                before
+
+                doing it, as tagging makes the release visible.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-api: Add function to get final state of release"
+              hash: 3e2e25182d45801e8e4df9908170e73d4696f81a
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-lib: Extract release finalization as function"
+              hash: 969f6b941bd9fb34d82fbc0d48838b7b4898b2e1
+              body: >
+                This allows it to be called from other context, like the OS
+                automation
+
+                test suite.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: Update balena-cli version to latest
+              hash: 13cdae57ddaa8e37f8a9a5d0c2873c2964cd3d31
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+            - subject: "balena-deploy: Fix header on balena_deploy_block()"
+              hash: dbbf059bf9b8df60b7578c7a41e0678fbff60043
+              body: >
+                The arguments to this function have been re-ordered but the
+                header had
+
+                not been modified.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: balena-yocto-scripts-1.19.5
+          title: "'Build and deploy'"
+          date: 2022-05-19T17:25:06.676Z
+    - subject: Update to honister
+      hash: 033cf358ff9f27e53ea2e389cee90813e13ebfcc
+      body: |
+        update all submodules to honister level
+      footer:
+        Change-type: patch
+        change-type: patch
+        Changelog-entry: Update to honister
+        changelog-entry: Update to honister
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois Loubser
+      nested: []
+    - subject: Add build and deploy workflow
+      hash: 8479899afe7e69ced35ef851bacb7428fbb864c7
+      body: >
+        This workflow will launch a Jenkins build and draft deploy job when a
+        new
+
+        tag is made.
+      footer:
+        Changelog-entry: Add build and deploy workflow
+        changelog-entry: Add build and deploy workflow
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+    - subject: "layers/meta-balena: Add submodule on v2.98.12"
+      hash: 2cc7ef2c0418a4fd42739b05438094a254df6b65
+      body: ""
+      footer:
+        Changelog-entry: "layers/meta-balena: Add submodule on v2.98.12"
+        changelog-entry: "layers/meta-balena: Add submodule on v2.98.12"
+        Signed-off-by: Alexandru Costache <alexandru@balena.io>
+        signed-off-by: Alexandru Costache <alexandru@balena.io>
+      author: Alexandru Costache
+      nested: []
+  version: 2.98.12
+  title: "'balena-yocto-scripts: Update to v1.19.8'"
+  date: 2022-06-18T11:57:16.044Z
