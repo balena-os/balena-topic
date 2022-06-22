@@ -1,4 +1,193 @@
 - commits:
+    - subject: Update layers/meta-balena to f257dbef1e45f7b296c2be51418fddb6c26e5a22
+      hash: 7ce8e701272ea6459b07d912b853932a2e297384
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to f257dbef1e45f7b296c2be51418fddb6c26e5a22
+        changelog-entry: Update layers/meta-balena to f257dbef1e45f7b296c2be51418fddb6c26e5a22
+      author: Renovate Bot
+      nested:
+        - commits:
+            - subject: Update tests/leviathan digest to 9e0ab34
+              hash: 5a828ca31e722a76a8f3fa869354fcf39dae0e8b
+              body: Update tests/leviathan
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: renovate[bot]
+              nested:
+                - commits:
+                    - subject: "core: worker: simplify rebootDut"
+                      hash: 55981700fb4c90a1f81192a44725f2c2d49e6135
+                      body: >
+                        worker.rebootDut() contains retry logic using
+                        utils.waitUntil() wrapping
+
+                        this.executeCommandInHostOS(). The latter contains its own retry logic,
+
+                        which will try to execute a given command for up to five minutes before
+
+                        timing out. Remove the retry logic from worker.rebootDut(), as it's
+
+                        redundant and adds latency.
+                      footer:
+                        Change-type: patch
+                        change-type: patch
+                        Signed-off-by: Joseph Kogut <joseph@balena.io>
+                        signed-off-by: Joseph Kogut <joseph@balena.io>
+                      author: Joseph Kogut
+                      nested: []
+                    - subject: "core: worker: reduce interval in executeCommandInHostOS"
+                      hash: 7f8b371b3035eed2b32011295768d5bec19ba1ba
+                      body: >
+                        The default interval for retrying this command is 5s,
+                        with a total
+
+                        timeout of 2m30s. Reduce the timeout to 1s to reduce latency for the
+
+                        successful case, while increasing the total timeout to 5m.
+                      footer:
+                        Change-type: patch
+                        change-type: patch
+                        Signed-off-by: Joseph Kogut <joseph@balena.io>
+                        signed-off-by: Joseph Kogut <joseph@balena.io>
+                      author: Joseph Kogut
+                      nested: []
+                  version: leviathan-2.5.4
+                  title: "'Simplify reboot'"
+                  date: 2022-06-17T19:55:24.238Z
+          version: meta-balena-2.99.15
+          title: "'Update tests/leviathan digest to 9e0ab34'"
+          date: 2022-06-21T19:54:36.661Z
+    - subject: Update contracts to 98c8c8ef3039bb927ce39f77eed4479f12c77fac
+      hash: 995a01ba7e891ea53f27ea38194558c8f62e805d
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to 98c8c8ef3039bb927ce39f77eed4479f12c77fac
+        changelog-entry: Update contracts to 98c8c8ef3039bb927ce39f77eed4479f12c77fac
+      author: Renovate Bot
+      nested: []
+    - subject: Update layers/meta-balena to ecfd582cea1f2ca7a5e282424693487320b5ce85
+      hash: f1c18a5c573fa51f40932915acd15d7289f8de9f
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to ecfd582cea1f2ca7a5e282424693487320b5ce85
+        changelog-entry: Update layers/meta-balena to ecfd582cea1f2ca7a5e282424693487320b5ce85
+      author: Renovate Bot
+      nested:
+        - commits:
+            - subject: Update tests/leviathan digest to 9e0ab34
+              hash: 5a828ca31e722a76a8f3fa869354fcf39dae0e8b
+              body: Update tests/leviathan
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: renovate[bot]
+              nested:
+                - commits:
+                    - subject: "core: worker: simplify rebootDut"
+                      hash: 55981700fb4c90a1f81192a44725f2c2d49e6135
+                      body: >
+                        worker.rebootDut() contains retry logic using
+                        utils.waitUntil() wrapping
+
+                        this.executeCommandInHostOS(). The latter contains its own retry logic,
+
+                        which will try to execute a given command for up to five minutes before
+
+                        timing out. Remove the retry logic from worker.rebootDut(), as it's
+
+                        redundant and adds latency.
+                      footer:
+                        Change-type: patch
+                        change-type: patch
+                        Signed-off-by: Joseph Kogut <joseph@balena.io>
+                        signed-off-by: Joseph Kogut <joseph@balena.io>
+                      author: Joseph Kogut
+                      nested: []
+                    - subject: "core: worker: reduce interval in executeCommandInHostOS"
+                      hash: 7f8b371b3035eed2b32011295768d5bec19ba1ba
+                      body: >
+                        The default interval for retrying this command is 5s,
+                        with a total
+
+                        timeout of 2m30s. Reduce the timeout to 1s to reduce latency for the
+
+                        successful case, while increasing the total timeout to 5m.
+                      footer:
+                        Change-type: patch
+                        change-type: patch
+                        Signed-off-by: Joseph Kogut <joseph@balena.io>
+                        signed-off-by: Joseph Kogut <joseph@balena.io>
+                      author: Joseph Kogut
+                      nested: []
+                  version: leviathan-2.5.4
+                  title: "'Simplify reboot'"
+                  date: 2022-06-17T19:55:24.238Z
+          version: meta-balena-2.99.15
+          title: "'Update tests/leviathan digest to 9e0ab34'"
+          date: 2022-06-21T19:54:36.661Z
+    - subject: Moce renovate.json to repository root and add includeForks
+      hash: 61ec39d18dfd1f5713f33d19f0851f1880375cb8
+      body: |
+        The `includeForks` setting that allows renovate to process forked
+        repositories only works in a `renovate.json` file placed in the
+        repository root.
+      footer:
+        Changelog-entry: Moce renovate.json to repository root and add includeForks
+        changelog-entry: Moce renovate.json to repository root and add includeForks
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+    - subject: Remove fork configuration that exists on parent from local renovate
+        configuration
+      hash: e08c77512897228383cb1e1ff6b19f9ad2d5a119
+      body: ""
+      footer:
+        Changelog-entry: Remove fork configuration that exists on parent from local
+          renovate configuration
+        changelog-entry: Remove fork configuration that exists on parent from local
+          renovate configuration
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+    - subject: Configure renovate to work on fork
+      hash: a71cc2e6f5d8f8fd2c9a3e74a1312325b6a2317c
+      body: ""
+      footer:
+        Changelog-entry: Configure renovate to work on fork
+        changelog-entry: Configure renovate to work on fork
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+    - subject: Add contracts submodule
+      hash: 1c5fc196dba6bf8397a6a3198d95bd785b24deec
+      body: |
+        This is used to build and deploy an OS contract to the fleet.
+      footer:
+        Changelog-entry: Add contracts submodule
+        changelog-entry: Add contracts submodule
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+    - subject: Add renovate configuration
+      hash: 766d16516b6c1ccfaaea8302111c8f91552e4174
+      body: ""
+      footer:
+        Changelog-entry: Add renovate configuration
+        changelog-entry: Add renovate configuration
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+  version: 2.99.15
+  title: "'Update layers/meta-balena digest to f257dbe'"
+  date: 2022-06-22T02:39:10.063Z
+- commits:
     - subject: Update balena-yocto-scripts to v1.19.8
       hash: ae2e7bc9c1ff16d483cb42f4b0e298ec37204723
       body: |
