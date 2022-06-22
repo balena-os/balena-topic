@@ -1,4 +1,36 @@
 - commits:
+    - subject: Update layers/meta-balena to bdafe1de2e9ee659e600fdc7cfc8bb275d18e82c
+      hash: 42e18c78987a556efb25152e4585575df04236f2
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to bdafe1de2e9ee659e600fdc7cfc8bb275d18e82c
+        changelog-entry: Update layers/meta-balena to bdafe1de2e9ee659e600fdc7cfc8bb275d18e82c
+      author: Renovate Bot
+      nested:
+        - commits:
+            - subject: "tests: os: modem: reduce time taken scanning for modems"
+              hash: 7cb747bfadba14447cb682cfd15e0a15df0e3545
+              body: >
+                Reduce the interval between scans as well as the maximum number
+                of scans
+
+                for modems, reducing the time spent waiting when no modem is present
+
+                from ~50s to ~5s.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+          version: meta-balena-2.99.16
+          title: "'tests: os: modem: reduce time taken scanning for modems'"
+          date: 2022-06-22T15:50:28.606Z
+  version: 2.99.16
+  title: "'Update layers/meta-balena digest to bdafe1d'"
+  date: 2022-06-22T21:46:10.893Z
+- commits:
     - subject: Update layers/meta-balena to f257dbef1e45f7b296c2be51418fddb6c26e5a22
       hash: 7ce8e701272ea6459b07d912b853932a2e297384
       body: Update layers/meta-balena

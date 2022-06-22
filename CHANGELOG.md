@@ -1,6 +1,20 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.99.16
+## (2022-06-22)
+
+
+<details>
+<summary> Update layers/meta-balena to bdafe1de2e9ee659e600fdc7cfc8bb275d18e82c [Renovate Bot] </summary>
+
+> ## meta-balena-2.99.16
+> ### (2022-06-22)
+> 
+> * tests: os: modem: reduce time taken scanning for modems [Joseph Kogut]
+> 
+</details>
+
 # v2.99.15
 ## (2022-06-22)
 
