@@ -1,6 +1,20 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.99.17
+## (2022-06-23)
+
+
+<details>
+<summary> Update layers/meta-balena to 1c9301223cfcf611347b13e07f9058602af975c1 [Renovate Bot] </summary>
+
+> ## meta-balena-2.99.17
+> ### (2022-06-22)
+> 
+> * Update balena-io/balena-supervisor to v14.0.7 [renovate[bot]]
+> 
+</details>
+
 # v2.99.16
 ## (2022-06-22)
 
