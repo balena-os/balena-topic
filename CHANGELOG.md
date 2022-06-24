@@ -1,6 +1,20 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.99.18
+## (2022-06-24)
+
+
+<details>
+<summary> Update layers/meta-balena to 16898dbf4b204482fc0018bef3d823599a504c36 [Renovate Bot] </summary>
+
+> ## meta-balena-2.99.18
+> ### (2022-06-23)
+> 
+> * tests: os: config-json: fix race in udevRules test [Joseph Kogut]
+> 
+</details>
+
 # v2.99.17
 ## (2022-06-23)
 
