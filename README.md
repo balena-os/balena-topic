@@ -1,4 +1,4 @@
-#  balena-topic repository
+# balena-topic repository
 
 ## Clone/Initialize the repository
 
