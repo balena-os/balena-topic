@@ -38,3 +38,12 @@ See below for using the build script.
     `source layers/poky/oe-init-build-env`
 
 * Run bitbake (see message outputted when you sourced above for examples)
+
+### BalenaOS server build
+Use the following to replicate Balena container build process.
+```
+touch ~/.balena/token
+mkdir ~/shared_downloads_and_sstate
+git clone --recursive git@github.com:balena-os/balena-topic.git && cd balena-topic
+./balena-build.sh -d tdpzu9 -s ~/shared_downloads_and_sstate
+```

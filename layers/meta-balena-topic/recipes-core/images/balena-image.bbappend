@@ -15,11 +15,11 @@ DEVICETREELINKS ??= "system.dtb ${DEVICETREE}"
 # Postprocessing to reduce the amount of work to be done
 # by configuration scripts
 topicbalena_rootfs_postprocess() {
-	echo -e "${DEVICETREELINKS}" | while read LINK TARGET
+	/bin/echo -e "${DEVICETREELINKS}" | while read LINK TARGET
 	do
 		if [ -n "${TARGET}" ]
 		then
-			echo "DT: ${LINK}->${TARGET}"
+			/bin/echo "DT: ${LINK}->${TARGET}"
 			ln -s ${TARGET} ${IMAGE_ROOTFS}/boot/${LINK}
 		fi
 	done
