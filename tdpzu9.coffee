@@ -22,7 +22,7 @@ module.exports =
 		machine: 'tdpzu9'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
-		version: 'yocto-zeus'
+		version: 'yocto-honister'
 		deployArtifact: 'balena-image-tdpzu9.balenaos-img'
 
 	configuration:
