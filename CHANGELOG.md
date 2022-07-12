@@ -1,6 +1,24 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.99.27
+## (2022-07-12)
+
+* Fix '-e' build issue [Francois]
+* Update to honister [Francois]
+* Update to honister [Francois]
+* Update layers/meta-balena to d748c184c7348683378b4e8f0dbc2cfc014b65de [renovate[bot]]
+* Update layers/meta-balena to 1f79bcbb751f8715c49b207fdf737a2a089aff4c [renovate[bot]]
+* Update balena-yocto-scripts to 5e003d52ac8e118af3cce662362d45f780ade704 [renovate[bot]]
+* Update balena-yocto-scripts to 29b218350eb1553f0f2c4da2753e9f6722226f41 [renovate[bot]]
+* Update layers/meta-balena to b76de1e01b5e49196a800340335a3fb2c814b931 [renovate[bot]]
+* Update layers/meta-balena to 48847f04f125fe90cd0c385fcbb617210233571e [renovate[bot]]
+* Update layers/meta-balena to d44b153e75f61c8a18d5149f37412f1fc1e577d9 [renovate[bot]]
+* Update layers/meta-balena to ecbbdd001ec3b7a052d170a5592ea8bfc43477f0 [renovate[bot]]
+* Update layers/meta-balena to b266b1a4ebeb269145192f8412fa12c902a30812 [renovate[bot]]
+* Update layers/meta-balena to 34e139b190f7aef385f9d7a831fe90e5efee007d [Renovate Bot]
+* Update layers/meta-balena to 85c5bf992befbdd5b4f88978aeb7acd1a206bf9b [Renovate Bot]
+
 # v2.99.18
 ## (2022-06-24)
 
