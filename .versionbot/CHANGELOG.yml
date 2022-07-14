@@ -1,4 +1,48 @@
 - commits:
+    - subject: Update layers/meta-balena to e25da86814cf073f06a45186609ca053955219c7
+      hash: 58ea879d791b95156b603fdd42fb12aa5b3c8984
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to e25da86814cf073f06a45186609ca053955219c7
+        changelog-entry: Update layers/meta-balena to e25da86814cf073f06a45186609ca053955219c7
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: Update balena-io/balena-supervisor to v14.0.10
+              hash: 8333afa3429b681419d0d834e39c80c6180f31cc
+              body: Update balena-io/balena-supervisor
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: renovate[bot]
+              nested: []
+          version: meta-balena-2.99.29
+          title: "'Update balena-io/balena-supervisor to v14.0.10'"
+          date: 2022-07-14T00:31:19.818Z
+    - subject: Update layers/meta-balena to 52d875f2794f049e43cb79e63ec419e2ab090471
+      hash: 91c048b41094e55487a23510888211268efa0ba9
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 52d875f2794f049e43cb79e63ec419e2ab090471
+        changelog-entry: Update layers/meta-balena to 52d875f2794f049e43cb79e63ec419e2ab090471
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: Update balena-io/balena-supervisor to v14.0.10
+              hash: 8333afa3429b681419d0d834e39c80c6180f31cc
+              body: Update balena-io/balena-supervisor
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: renovate[bot]
+              nested: []
+          version: meta-balena-2.99.29
+          title: "'Update balena-io/balena-supervisor to v14.0.10'"
+          date: 2022-07-14T00:31:19.818Z
+  version: 2.99.29
+  title: "'Update layers/meta-balena digest to e25da86'"
+  date: 2022-07-14T03:44:51.793Z
+- commits:
     - subject: Update build and deploy workflow to support ESR tags
       hash: f829f2d4adcc475c55b1c1fa5c722fd1aaa6c1d3
       body: |
