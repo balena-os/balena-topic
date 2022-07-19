@@ -5,7 +5,7 @@ module.exports =
 	version: 1
 	slug: 'tdpzu9'
 	aliases: []
-	name: 'Topic Florida Plus V1R2 (tdpzu9)'
+	name: 'Topic Florida Plus (tdpzu9)'
 	arch: 'aarch64'
 	state: 'released'
 
