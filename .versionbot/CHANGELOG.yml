@@ -1,4 +1,46 @@
 - commits:
+    - subject: Jenkins build fix
+      hash: 89f673e549a72a7a0042f6cac92f08a004254f7c
+      body: |
+        Build failing on jenkins buildserver (after clearing cache) due to
+        mobile-broadband-provider-info.git do_fetch() failing because the repo
+        'master' branch was renamed to 'main'
+      footer:
+        Changelog-entry: Jenkins build fix
+        changelog-entry: Jenkins build fix
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: tdpzu9 device support
+      hash: 63f9adea1da9239824affbacc6e8b7fb89ddd6bb
+      body: >
+        Repo currently only supports the tdpzu9 device, so don't run
+        coffeemaker.sh
+
+        Change build command to indicate which machine to build using '-m' option.
+      footer:
+        Changelog-entry: tdpzu9 device support
+        changelog-entry: tdpzu9 device support
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: fix tdpzu9 device name
+      hash: 663f1f6058ed5d8841d5aa8154b999629ce62492
+      body: |
+        Remove "V1R2" version from Topic device name
+      footer:
+        Changelog-entry: fix tdpzu9 device name
+        changelog-entry: fix tdpzu9 device name
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+  version: 2.100.6+rev1
+  title: "'tdpzu9.coffee: fix tdpzu9 device name'"
+  date: 2022-07-26T15:40:58.257Z
+- commits:
     - subject: Update layers/meta-balena to 2438d75a2515240ef254b956da08094b3f4e2d61
       hash: c683aded5cdfeeeba876183a4c23a946a7f17c96
       body: Update layers/meta-balena
