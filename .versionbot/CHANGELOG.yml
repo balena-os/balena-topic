@@ -1,4 +1,18 @@
 - commits:
+    - subject: Switch the poky submodule to honister-3.4.3
+      hash: feef7582beb13dfd33f650bff8122f38e7b51c33
+      body: ""
+      footer:
+        Changelog-entry: Switch the poky submodule to honister-3.4.3
+        changelog-entry: Switch the poky submodule to honister-3.4.3
+        Signed-off-by: Florin Sarbu <florin@balena.io>
+        signed-off-by: Florin Sarbu <florin@balena.io>
+      author: Florin Sarbu
+      nested: []
+  version: 2.100.11+rev3
+  title: "'layers/poky: Switch to honister-3.4.3'"
+  date: 2022-07-28T08:32:31.830Z
+- commits:
     - subject: Jenkins build fix
       hash: 44728d30dacd83f095614e83c08d0221ed3129c0
       body: |

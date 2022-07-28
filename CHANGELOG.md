@@ -1,6 +1,11 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.100.11+rev3
+## (2022-07-28)
+
+* Switch the poky submodule to honister-3.4.3 [Florin Sarbu]
+
 # v2.100.11+rev2
 ## (2022-07-28)
 
