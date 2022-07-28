@@ -1,4 +1,180 @@
 - commits:
+    - subject: Update layers/meta-balena to e646204762ac7abb2407a0e1dba8689aeade70f4
+      hash: 2915b468cae18196e1863022fc61fda45941e0a1
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to e646204762ac7abb2407a0e1dba8689aeade70f4
+        changelog-entry: Update layers/meta-balena to e646204762ac7abb2407a0e1dba8689aeade70f4
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "test: os: chrony: Double the wait for time skew test"
+              hash: 756b5eba8d3b197f56688be030b522f94a628c42
+              body: >
+                Including the 2min systemd watchdog timer, plus 60 attempts to
+                sync
+
+                the time via chronyc waitsync, it may take longer than expected to
+
+                trigger the healthcheck condition.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+            - subject: "os: tests: chrony: Wrap disable/enable NTP in test conditions"
+              hash: 6d51bd39d02898a3a50f8b5ff133a283b0368463
+              body: >
+                This allows us to catch if one of the enable/disable steps has
+                failed
+
+                and includes time to execute.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+            - subject: "tests: os: Add helper to write or remove properties in config.json"
+              hash: ce338f46cf7d79044b7f67850744784db3869465
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+          version: meta-balena-2.100.11
+          title: "'tests: os: Add helper to write or remove properties in config.json'"
+          date: 2022-07-25T17:36:43.495Z
+        - commits:
+            - subject: "tests: cloud: preload: fix no-return-await"
+              hash: 4011daec80bf0e81915bdaf6aafdcd1cd298e5d6
+              body: |
+                Fix ESLint no-return-await
+                https://eslint.org/docs/latest/rules/no-return-await
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+            - subject: "tests: cloud: preload: reduce waitUntil interval"
+              hash: 5b4669444e99788ceff5615ed66edc13719ab70b
+              body: |
+                Specify an explicit retry interval in waitUntil().
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+            - subject: "tests: cloud: multicontainer: reduce waitUntil interval"
+              hash: 92d72c900e0017203a8de21a7de1930528eb25e6
+              body: |
+                Specify an explicit retry interval in waitUntil().
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+          version: meta-balena-2.100.10
+          title: "'Jakogut/cloud fixups'"
+          date: 2022-07-24T10:14:15.412Z
+        - commits:
+            - subject: "tests: os: engine-socket - wait for response"
+              hash: 61b32c0d36e2c2af387b77bdc398d3294ffedbda
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Ryan Cooke <ryan@balena.io>
+                signed-off-by: Ryan Cooke <ryan@balena.io>
+              author: rcooke-warwick
+              nested: []
+          version: meta-balena-2.100.9
+          title: "'tests: os: engine-socket - wait for response before continuing test'"
+          date: 2022-07-22T19:35:54.404Z
+        - commits:
+            - subject: "tests/os: Add 243390 unmanged Wifi HATs tests from testLodge"
+              hash: d02baf51d053124059aae911eb1e0e75f92d62d7
+              body: |
+                This covers the unmanaged part of the tests for the CUS
+                and EUS wifi chipsets on this DT: TC50, TC51, TC52, TC53,
+                TC55, TC56.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+              nested: []
+          version: meta-balena-2.100.8
+          title: "'tests: Add 243390 unmanged Wifi HATs tests from testLodge'"
+          date: 2022-07-21T23:48:56.244Z
+        - commits:
+            - subject: "tests: hup: Clear inactive storage partition before HUP"
+              hash: 411639a031cdbdfc8ccdcc911e06f94fbf28ca9c
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+            - subject: "tests: hup: Add root partition tests"
+              hash: 0aa0a53a27867ce9e1a1d511f68736d62a9b3b1c
+              body: |
+                Rather than verify the OS version that doesn't always
+                change between upgrades, we should confirm that we are not
+                running on the same root partition as we were before HUP.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+            - subject: "tests: hup: Replace custom steps with tests and verify exit code"
+              hash: 60923171f34aa9d55edce08b010a7b48f97f615f
+              body: |
+                We want to fail the test if one of setup steps fails to execute.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+            - subject: "tests: hup: Wait for rollback files to be removed or created"
+              hash: e4ba7abc3225f26926cf6cd9acee1431bb839950
+              body: |
+                Rather than waiting for services to become inactive, just
+                wait for the expected files to be created or removed in
+                the state partition.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+          version: meta-balena-2.100.7
+          title: "'tests: hup: Clear inactive storage partition before HUP'"
+          date: 2022-07-21T16:21:04.482Z
+  version: 2.100.11
+  title: "'Update layers/meta-balena digest to e646204'"
+  date: 2022-07-27T11:20:23.049Z
+- commits:
     - subject: Update contracts to 9db49d2fbb34542f53bf496135c32cccf5df487c
       hash: f0d5229f4ecfee7ebe6813565380d7a924448397
       body: Update contracts

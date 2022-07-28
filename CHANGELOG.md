@@ -1,6 +1,47 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.100.11
+## (2022-07-27)
+
+
+<details>
+<summary> Update layers/meta-balena to e646204762ac7abb2407a0e1dba8689aeade70f4 [renovate[bot]] </summary>
+
+> ## meta-balena-2.100.11
+> ### (2022-07-25)
+> 
+> * test: os: chrony: Double the wait for time skew test [Kyle Harding]
+> * os: tests: chrony: Wrap disable/enable NTP in test conditions [Kyle Harding]
+> * tests: os: Add helper to write or remove properties in config.json [Kyle Harding]
+> 
+> ## meta-balena-2.100.10
+> ### (2022-07-24)
+> 
+> * tests: cloud: preload: fix no-return-await [Joseph Kogut]
+> * tests: cloud: preload: reduce waitUntil interval [Joseph Kogut]
+> * tests: cloud: multicontainer: reduce waitUntil interval [Joseph Kogut]
+> 
+> ## meta-balena-2.100.9
+> ### (2022-07-22)
+> 
+> * tests: os: engine-socket - wait for response [rcooke-warwick]
+> 
+> ## meta-balena-2.100.8
+> ### (2022-07-21)
+> 
+> * tests/os: Add 243390 unmanged Wifi HATs tests from testLodge [Alexandru Costache]
+> 
+> ## meta-balena-2.100.7
+> ### (2022-07-21)
+> 
+> * tests: hup: Clear inactive storage partition before HUP [Kyle Harding]
+> * tests: hup: Add root partition tests [Kyle Harding]
+> * tests: hup: Replace custom steps with tests and verify exit code [Kyle Harding]
+> * tests: hup: Wait for rollback files to be removed or created [Kyle Harding]
+> 
+</details>
+
 # v2.100.6+rev1
 ## (2022-07-27)
 
