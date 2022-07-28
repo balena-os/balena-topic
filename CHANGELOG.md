@@ -1,6 +1,13 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.100.11+rev2
+## (2022-07-28)
+
+* Jenkins build fix [Francois]
+* tdpzu9 device support [Francois]
+* fix tdpzu9 device name [Francois]
+
 # v2.100.11+rev1
 ## (2022-07-28)
 

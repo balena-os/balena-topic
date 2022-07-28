@@ -1,4 +1,46 @@
 - commits:
+    - subject: Jenkins build fix
+      hash: 44728d30dacd83f095614e83c08d0221ed3129c0
+      body: |
+        Build failing on jenkins buildserver (after clearing cache) due to
+        mobile-broadband-provider-info.git do_fetch() failing because the repo
+        'master' branch was renamed to 'main'
+      footer:
+        Changelog-entry: Jenkins build fix
+        changelog-entry: Jenkins build fix
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: tdpzu9 device support
+      hash: 8ec6a2ebb61783db4f0d8b370856afbe575a37ae
+      body: >
+        Repo currently only supports the tdpzu9 device, so don't run
+        coffeemaker.sh
+
+        Change build command to indicate which machine to build using '-m' option.
+      footer:
+        Changelog-entry: tdpzu9 device support
+        changelog-entry: tdpzu9 device support
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: fix tdpzu9 device name
+      hash: 653a87c99a4e6414004a6a7a4aec4bf2e2bd8da7
+      body: |
+        Remove "V1R2" version from Topic device name
+      footer:
+        Changelog-entry: fix tdpzu9 device name
+        changelog-entry: fix tdpzu9 device name
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+  version: 2.100.11+rev2
+  title: "'Fix tdpzu9 device name'"
+  date: 2022-07-28T07:47:23.668Z
+- commits:
     - subject: Update balena-yocto-scripts to 09e4514953fed499a69c224b47969fd2c3fb7ab8
       hash: b8ee421ecb11e0f2e2bbb52af8392dc0103d4ef5
       body: Update balena-yocto-scripts
