@@ -1,6 +1,12 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.101.0+rev1
+## (2022-08-02)
+
+* Remove final argument from build and deploy workflow [Alex Gonzalez]
+* Update build and deploy workflow to v0.0.9 [Alex Gonzalez]
+
 # v2.101.0
 ## (2022-07-30)
 
