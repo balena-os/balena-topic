@@ -1,4 +1,19 @@
 - commits:
+    - subject: rebase_pr test
+      hash: 0868b9536b14fd74f94433d76fad1dcb2669da49
+      body: |
+        Minor delta to README.md to test the BalenaOS github flow
+      footer:
+        Changelog-entry: rebase_pr test
+        changelog-entry: rebase_pr test
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+  version: 2.101.1+rev1
+  title: "'test: minor update to README to test PR'"
+  date: 2022-08-04T10:20:04.659Z
+- commits:
     - subject: Update layers/meta-balena to 7a62296718a363abd393107933f30e611ec27d1e
       hash: 73d576e76f669dceb9384176a3db1e2b3d3eb7d5
       body: Update layers/meta-balena
