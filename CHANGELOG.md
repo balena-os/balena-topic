@@ -1,6 +1,12 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.101.5+rev2
+## (2022-08-16)
+
+* increase rootfs part to fit image [Francois]
+* add rtl88x2bu wifi driver [Francois]
+
 # v2.101.5+rev1
 ## (2022-08-15)
 

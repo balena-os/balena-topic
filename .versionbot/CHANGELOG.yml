@@ -1,4 +1,37 @@
 - commits:
+    - subject: increase rootfs part to fit image
+      hash: d11b2ebd5e2e4a66509e543e1b8b0d46e72b5973
+      body: |
+        Issue:
+        Adding the wifi driver caused BalenaOS image_size_check() test to fail.
+        "ERROR: balena-image-1.0-r0 do_image_size_check: The disk aligned root
+        filesystem size 278528 exceeds the available space 274432"
+
+        A 700MB hardcoaded value is allocated for the BalenaOS image in
+        'image_types_balena.bbclass'.
+        400MB is now allocated to the ROOTFS partition.
+      footer:
+        Changelog-entry: increase rootfs part to fit image
+        changelog-entry: increase rootfs part to fit image
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: add rtl88x2bu wifi driver
+      hash: b94e966f7404e797862b87ccf3ef0d8db6136e7a
+      body: |
+        Add wifi driver
+      footer:
+        Changelog-entry: add rtl88x2bu wifi driver
+        changelog-entry: add rtl88x2bu wifi driver
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+  version: 2.101.5+rev2
+  title: "'Feature/wifi rtl88x2bu driver'"
+  date: 2022-08-16T05:39:50.067Z
+- commits:
     - subject: Update balena-yocto-scripts to 99807501efffc8c5034c88361049650a02511a78
       hash: fc85e7a6a3a40881716504ff75f11bdb38680078
       body: Update balena-yocto-scripts
