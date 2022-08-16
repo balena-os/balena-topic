@@ -1,6 +1,11 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.101.5+rev3
+## (2022-08-16)
+
+* Modify layer ordering [Alex Gonzalez]
+
 # v2.101.5+rev2
 ## (2022-08-16)
 
