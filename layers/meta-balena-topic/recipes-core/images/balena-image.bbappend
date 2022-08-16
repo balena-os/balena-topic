@@ -26,3 +26,8 @@ topicbalena_rootfs_postprocess() {
 }
 ROOTFS_POSTPROCESS_COMMAND += "topicbalena_rootfs_postprocess; "
 
+
+# Sizes in KiB. 
+# We need to increase the rootfs size to make space for additional drivers in ROOTFS. 
+# BalenaOS image has a 700MB max size defined in 'image_types_balena.bbclass'
+IMAGE_ROOTFS_SIZE="409600"
