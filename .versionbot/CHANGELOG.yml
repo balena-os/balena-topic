@@ -1,4 +1,30 @@
 - commits:
+    - subject: Update layers/meta-balena to 7dfa6d2abc3795d47a8a6cdb30bc540ee110e7ee
+      hash: dba87a5daee0e844b3b4a358af1a1335ac080e19
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 7dfa6d2abc3795d47a8a6cdb30bc540ee110e7ee
+        changelog-entry: Update layers/meta-balena to 7dfa6d2abc3795d47a8a6cdb30bc540ee110e7ee
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "tests/cloud: fix ssh prod test for physical duts"
+              hash: abbb8233f803fd4216fe27bb8a9c28f96d30085e
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Ryan Cooke <ryan@balena.io>
+                signed-off-by: Ryan Cooke <ryan@balena.io>
+              author: rcooke-warwick
+              nested: []
+          version: meta-balena-2.101.6
+          title: "'tests/cloud: fix ssh prod test for physical duts'"
+          date: 2022-08-15T12:33:41.204Z
+  version: 2.101.6
+  title: "'Update layers/meta-balena digest to 7dfa6d2'"
+  date: 2022-08-16T12:14:10.829Z
+- commits:
     - subject: Modify layer ordering
       hash: e3bc4898eff69f4fd826a400200c617bbdd592dd
       body: |
