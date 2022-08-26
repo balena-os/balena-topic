@@ -1,6 +1,30 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.102.0
+## (2022-08-26)
+
+
+<details>
+<summary> Update layers/meta-balena to 09dd67ef6a3abd1e9048bb39a2b9a02dc3af18c3 [renovate[bot]] </summary>
+
+> ## meta-balena-2.102.0
+> ### (2022-08-25)
+> 
+> * meta-balena-common: distro: Add rust preferred versions [Alex Gonzalez]
+> * meta-balena-common: os-config: Update to v1.2.11 [Alex Gonzalez]
+> * meta-balena-integration: Replace parallel_make_argument() [Alex Gonzalez]
+> * meta-balena-integration: Update cmake for versions below Zeus [Alex Gonzalez]
+> * meta-balena-rust: Add condition check for parallel_make_argument() use [Alex Gonzalez]
+> * meta-balena-rust: Provide crate fetcher for Yocto versions without it [Alex Gonzalez]
+> * meta-balena-rust: Modify to use without oe.rust.arch_to_rust_arch() support [Alex Gonzalez]
+> * meta-balena-rust: Add rust recipes to keep the rust version a distribution config [Alex Gonzalez]
+> * meta-balena-rust: Add compatibility layer [Alex Gonzalez]
+> 
+</details>
+
+* Update contracts to 3bd4b2097a2796afc9a56a580e555982aad4f10b [renovate[bot]]
+
 # v2.101.11
 ## (2022-08-25)
 
