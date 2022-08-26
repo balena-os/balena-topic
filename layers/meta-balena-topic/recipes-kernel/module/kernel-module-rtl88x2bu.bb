@@ -17,9 +17,4 @@ SRC_URI = "git://github.com/cilynx/rtl88x2bu.git;branch=5.8.7.1_35809.20191129_C
 "
 SRC_URI[md5sum] = "1117c79a33f8c15ba32d19a68bdd91dc"
 
-# Extra package to install for the board
-MACHINE_EXTRA_RRECOMMENDS += "\
-	kernel-module-rtl88x2bu \
-	"
-
 KERNEL_MODULE_AUTOLOAD += "rtl88x2bu"
