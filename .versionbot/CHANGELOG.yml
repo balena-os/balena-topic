@@ -1,4 +1,44 @@
 - commits:
+    - subject: Update layers/meta-balena to a24e52592b2fbc1c60e6a6fc39c61470219f61b1
+      hash: b435de37bac962522d88f4aaf2391733a9d734af
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to a24e52592b2fbc1c60e6a6fc39c61470219f61b1
+        changelog-entry: Update layers/meta-balena to a24e52592b2fbc1c60e6a6fc39c61470219f61b1
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "renovate: Restore default commit body"
+              hash: 05be6314e136d40ae8cdf54988b27e059de07e68
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+          version: meta-balena-2.102.3
+          title: "'renovate: Restore default commit body'"
+          date: 2022-08-30T19:45:01.208Z
+        - commits:
+            - subject: "Renovate: Fix package rules for balena supervisor"
+              hash: 2a7cb0c5bc3a53980ac8bcd2190500a51fcd85c5
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+          version: meta-balena-2.102.2
+          title: "'Renovate: Fix package rules for balena supervisor'"
+          date: 2022-08-29T16:15:17.586Z
+  version: 2.102.3
+  title: "'Update layers/meta-balena digest to a24e525'"
+  date: 2022-08-30T23:43:48.282Z
+- commits:
     - subject: Update layers/meta-balena to 59f3caaab340bf15bf562b60e1f7315c437e1297
       hash: ccf36a58e4162b24ccead1f8672fb90453dc5bf2
       body: Update layers/meta-balena
