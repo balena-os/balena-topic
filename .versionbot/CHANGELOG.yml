@@ -1,4 +1,26 @@
 - commits:
+    - subject: Update contracts to f9e017074a7d7e26f5b56642fa86d2533f349f33
+      hash: 0e78e55aa27365ee8da86535e313451387f1a12e
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to f9e017074a7d7e26f5b56642fa86d2533f349f33
+        changelog-entry: Update contracts to f9e017074a7d7e26f5b56642fa86d2533f349f33
+      author: renovate[bot]
+      nested: []
+    - subject: Switch from balenaCI to flowzone
+      hash: 58bd8a947d869f92614e7f0faa5632d16fdbfa16
+      body: ""
+      footer:
+        Changelog-entry: Switch from balenaCI to flowzone
+        changelog-entry: Switch from balenaCI to flowzone
+        Signed-off-by: Alex Gonzalez <alexg@balena.io>
+        signed-off-by: Alex Gonzalez <alexg@balena.io>
+      author: Alex Gonzalez
+      nested: []
+  version: 2.105.9+rev2
+  title: ""
+  date: 2022-10-14T16:40:11.600Z
+- commits:
     - subject: Update contracts to 6f3ccc3060c64de164d6fd60a0bc65b2d8ceb5d3
       hash: 2d794466c6f68313998486a048e60a0318e06219
       body: Update contracts
@@ -61,8 +83,7 @@
             - subject: "meta-balena-rust: Fix ABI for arm"
               hash: efe707f06134a345ef4d6f396555b4c3e057f23d
               body: >
-                The move to include the ABI in the target definition was done in
-                Poky:
+                The move to include the ABI in the target definition was done in Poky:
 
                 d6b563710e6cc0857843433d85023d47f9f2037d
 
@@ -149,8 +170,7 @@
                     - subject: 'Revert "worker: Pin to stable release 2.5.10 prior to md support"'
                       hash: 4f6f194e231fb1afccb0a86f6f8550e26dbcd142
                       body: >
-                        This reverts commit
-                        3b6ce13734e98e981492e01bc874c0a439cb1536.
+                        This reverts commit 3b6ce13734e98e981492e01bc874c0a439cb1536.
                       footer:
                         Change-type: patch
                         change-type: patch
@@ -571,8 +591,7 @@
                     - subject: "core: Switch to debian base and install standalone balena-cli"
                       hash: b6993366ce72f0c25f14dfeccdf42076fbf8dd50
                       body: >
-                        Unfortunately the standalone balena-cli package is
-                        linked to glibc
+                        Unfortunately the standalone balena-cli package is linked to glibc
 
                         and does not work with musl (alpine) so we need to switch to debian.
 
@@ -588,8 +607,7 @@
                     - subject: "core: Set node engine to match the Dockerfile"
                       hash: 06fcacf6573385aa2709bb2f0deb8a6bee3dd14a
                       body: >
-                        This version can likely be increased now that the
-                        balena-cli
+                        This version can likely be increased now that the balena-cli
 
                         is no longer part of the ndoe dependencies, but for now just
 
@@ -604,8 +622,7 @@
                     - subject: "core: Remove balena-cli npm dependency"
                       hash: 8b785515f4e4b5d2161f2b84a93a6d162b929875
                       body: >
-                        Pave the way for installing balena-cli standalone
-                        package.
+                        Pave the way for installing balena-cli standalone package.
                       footer:
                         Change-type: patch
                         change-type: patch
@@ -635,8 +652,7 @@
             - subject: "resin-init-flasher: skip array members not matching a named array"
               hash: 2c4c437329ff0e74521cf11b74edcf83f58ff8b3
               body: >
-                If a block device specified in resin-init-flasher.conf is part
-                of an
+                If a block device specified in resin-init-flasher.conf is part of an
 
                 array, but that assembled array name wasn't specified, skip it to avoid
 
@@ -651,8 +667,7 @@
             - subject: "resin-init-flasher: support pattern matching of devices"
               hash: d552508ce70cf53b5a9fd1e18f5e31d9dbcf2108
               body: >
-                Instead of querying devices w/ `fdisk -l`, glob match patterns
-                specified
+                Instead of querying devices w/ `fdisk -l`, glob match patterns specified
 
                 in resin-init-flasher.conf with devices present in `/dev`. This allows us to
 
@@ -772,8 +787,7 @@
             - subject: "README: Add kirkstone support"
               hash: aeff6b085ceeca7ff1d27079bcee7ebe2c6e6d7e
               body: >
-                Also, remove the TESTED note as all releases are tested. Specify
-                what is
+                Also, remove the TESTED note as all releases are tested. Specify what is
 
                 the upstream status for the different releases too.
 
@@ -799,8 +813,7 @@
             - subject: "kernel-balena-noimage: Remove kernel-image packages from image"
               hash: 08a1b066dfe21da6f43642c2d396edbfc34bb757
               body: >
-                These packages also install kernel images into the boot
-                directory in the
+                These packages also install kernel images into the boot directory in the
 
                 root partition, overwriting the initramfs kernel installed by
 
@@ -862,8 +875,7 @@
             - subject: "meta-balena-kirkstone: use upstream kernel-devsrc recipe"
               hash: d7656e313c88dd2b751d8e269a7f9dd049fbd4d4
               body: >
-                This recipe was brough-in when the default meta-balena version
-                was still
+                This recipe was brough-in when the default meta-balena version was still
 
                 behind the upstream version introducing it.
               footer:
@@ -876,8 +888,7 @@
             - subject: "meta-balena-kirkstone: use the procps recipe from upstream"
               hash: 871fc59292c9ca0673bae3486022d36751478a7d
               body: >
-                This recipe was useful until poky modified the procps recipe to
-                include
+                This recipe was useful until poky modified the procps recipe to include
 
                 just the ps utility.
               footer:
@@ -901,8 +912,7 @@
             - subject: "classes: image-balena: Fix journal blocks calculation"
               hash: b890cab9e4c5b364944e520ed4034ce71932f0bc
               body: >
-                Replace a static check for the "honister" distro name with a
-                version
+                Replace a static check for the "honister" distro name with a version
 
                 check on dumpe2fs which does not need further maintenance.
               footer:
@@ -943,8 +953,7 @@
             - subject: "balena-supervisor: Allow network use in install task"
               hash: 817c68135f5a96a4fc1673175bee25402fc58801
               body: >
-                This recipe checks the API for the supervisor version so it must
-                be
+                This recipe checks the API for the supervisor version so it must be
 
                 allowed network access.
               footer:
@@ -1059,8 +1068,7 @@
             - subject: "bluez5: update to 5.64"
               hash: f70ef8d009461fb5c25fec23ee51a56a3d50a2a6
               body: >
-                We keep the bluez recipe in meta-balena so we can use the same
-                version
+                We keep the bluez recipe in meta-balena so we can use the same version
 
                 independently of the Yocto version and integration layer used.
               footer:
@@ -1110,8 +1118,7 @@
                     - subject: "core: Copy all files/directories except those in dockerignore"
                       hash: d65bfbb94cab3cbfa676f53b42b85969bde41e58
                       body: >
-                        In some situations the contracts submodule may not exist
-                        so this
+                        In some situations the contracts submodule may not exist so this
 
                         will prevent the docker build from failing.
                       footer:
@@ -1283,8 +1290,7 @@
             - subject: "udev: run resin-update-state after md assemble"
               hash: 09a985b3847b887ae47047c011057372cfee993e
               body: >
-                Run the resin-update-state rules that create the by-state links
-                after md
+                Run the resin-update-state rules that create the by-state links after md
 
                 arrays are assembled. This fixes state link creation when running on a
 
@@ -1365,8 +1371,7 @@
             - subject: "meta-balena-thud: initramfs: Fix building with latest meta-balena"
               hash: 30bc6e7d27fb2ceaff5ea241fdd0e7b8224b84ea
               body: >
-                The latest meta-balena includes `util-linux-findmnt` as a kexec
-                module
+                The latest meta-balena includes `util-linux-findmnt` as a kexec module
 
                 dependency and this package has not yet been split from `util-linux` in
 
@@ -1397,8 +1402,7 @@
             - subject: "meta-balena-common: distro: Add rust preferred versions"
               hash: 0d3221fe5378ddb09248694ba2eb8571db63511b
               body: >
-                Also, do not set the preferred version for integration layers so
-                we
+                Also, do not set the preferred version for integration layers so we
 
                 use the same rust version across all Yocto releases.
               footer:
@@ -1421,8 +1425,7 @@
             - subject: "meta-balena-integration: Replace parallel_make_argument()"
               hash: 127be828f7c665d7bc6035b0b45d2cf81acfc0fa
               body: >
-                The oe.utils parallel_make_argument() was introduced in Zeus, so
-                this
+                The oe.utils parallel_make_argument() was introduced in Zeus, so this
 
                 commit replaces by a direct call to fetch PARALLEL_MAKE.
               footer:
@@ -1435,8 +1438,7 @@
             - subject: "meta-balena-integration: Update cmake for versions below Zeus"
               hash: c12764c100cc9bdbcc6fd5c9f5c62f327e695e11
               body: >
-                In order to use the same rust toolchain across all supported
-                Yocto
+                In order to use the same rust toolchain across all supported Yocto
 
                 versions this commit updates the cmake version on all integration layers
 
@@ -1457,8 +1459,7 @@
                 use"
               hash: bb853604fed3daa17abab38325a765b546751550
               body: >
-                This function is not part of all supported Yocto versions so
-                make a
+                This function is not part of all supported Yocto versions so make a
 
                 check for its existence before using it.
               footer:
@@ -1471,8 +1472,7 @@
             - subject: "meta-balena-rust: Provide crate fetcher for Yocto versions without it"
               hash: 8c251ac51f23b750f3716f16fbd5d5b9cd6c74dc
               body: >
-                The crate fetcher was introduced in bitbake in Kirkstone, before
-                that
+                The crate fetcher was introduced in bitbake in Kirkstone, before that
 
                 it was living in meta-rust.
 
@@ -1491,8 +1491,7 @@
                 support"
               hash: 5c48ac4b15bbabce38fb73488deae1b0bb219414
               body: >
-                The arch_to_rust_arch() function was introduced to cater for
-                ppc64le
+                The arch_to_rust_arch() function was introduced to cater for ppc64le
 
                 systems and is not present in older Yocto releases.
 
@@ -1515,8 +1514,7 @@
                 distribution config"
               hash: ecf0f36e6a316584dcf10397fa00d146a5bd478a
               body: >
-                With Kirkstone and the support of openSSL 3.0 it's not possible
-                to find
+                With Kirkstone and the support of openSSL 3.0 it's not possible to find
 
                 a set of dependencies that work for all of our rust applications across
 
@@ -1543,8 +1541,7 @@
             - subject: "meta-balena-rust: Add compatibility layer"
               hash: 9242585678e1e9027483fedcbe1d3e795deb0ebf
               body: >
-                This layer will allow to use the same rust toolchain across all
-                supported
+                This layer will allow to use the same rust toolchain across all supported
 
                 Yocto compatibility layers.
               footer:
@@ -1628,8 +1625,7 @@
             - subject: "meta-resin-sumo: libmbim: use v 1.24.2"
               hash: 1fe708b4bf84e60032c4e7f52316632a49ecc490
               body: >
-                The current meta-balena libmbim is not compatible with sumo's
-                libc
+                The current meta-balena libmbim is not compatible with sumo's libc
 
                 version.
               footer:
@@ -1677,8 +1673,7 @@
                     - subject: "compose: qemu: enable loopback and metadata devices"
                       hash: 962a1705b11457c7d9a87c17cc9e3bf1671d2257
                       body: >
-                        Copied from
-                        https://github.com/balena-os/leviathan-worker/pull/21
+                        Copied from https://github.com/balena-os/leviathan-worker/pull/21
                       footer:
                         Change-type: patch
                         change-type: patch
@@ -1776,8 +1771,7 @@
             - subject: Use a lightweight Engine healthcheck
               hash: 7146e4614c2658d6f7d5384602eb8ad213e08759
               body: >
-                Previously, our healthcheck verified if we were able to start a
-                new
+                Previously, our healthcheck verified if we were able to start a new
 
                 container. This had two downsides:
 
@@ -1808,8 +1802,7 @@
             - subject: Make Engine watchdog termination graceful
               hash: 9e322ee25bf50949880446f4fb85d1d8e864da37
               body: >
-                With `WatchdogSignal=SIGTERM` systemd will send a SIGTERM and
-                give the
+                With `WatchdogSignal=SIGTERM` systemd will send a SIGTERM and give the
 
                 Engine 90 seconds to gracefully shutdown before sending a SIGKILL. We
 
@@ -1919,8 +1912,7 @@
             - subject: "barys: Add balena-rust to syntax conversion step"
               hash: 2fb2b25a2bc6c226f3d4d570a2bfb261585ed283
               body: >
-                Recent versions of meta-balena include a balena-rust layer used
-                to
+                Recent versions of meta-balena include a balena-rust layer used to
 
                 specify a distro-set Rust version across all supported Yocto versions
 
@@ -1952,8 +1944,7 @@
             - subject: "meta-balena-rust: Link to meta-rust"
               hash: 83bd38733af9063c5d29d90fc0695838e4b718d3
               body: >
-                This is a temporary way that will allow to update the
-                bblayers.conf of
+                This is a temporary way that will allow to update the bblayers.conf of
 
                 device type repositories to include meta-balena/meta-balena-rust while
 
@@ -2122,8 +2113,7 @@
             - subject: DRY the HUP smoke tests
               hash: 46dc350d829c352dae62a87eb1aec21e69789503
               body: >
-                Our tests perform two HUPs (into and out of the release under
-                test), and
+                Our tests perform two HUPs (into and out of the release under test), and
 
                 the code for both of these HUPs were duplicated. This commit factors
 
@@ -2138,8 +2128,7 @@
             - subject: Check volume contents over HUPs
               hash: ef4e861fdd1dd7ea8d3a9b6dd34a0e1e30c8e852
               body: >
-                This is a small improvement over our previous test: in addition
-                to
+                This is a small improvement over our previous test: in addition to
 
                 checking that the volumes themselves are preserved over HUPs, we now
 
@@ -2173,8 +2162,7 @@
             - subject: "generic-amd64: match genericx86-64-ext connectivity"
               hash: ed449edbd6504f97e94f11f1f97075582cf27e7b
               body: >
-                Disable bluetooth/wifi in generic-amd64 to match
-                genericx86-64-ext.
+                Disable bluetooth/wifi in generic-amd64 to match genericx86-64-ext.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -2184,8 +2172,7 @@
             - subject: "generic-amd64: update name to include GPT qualifier"
               hash: ab8af4bff6ccff7d650c794ec8dc3e31be6f1671
               body: >
-                Update the long name for generic-amd64 to include the MBR
-                qualifier,
+                Update the long name for generic-amd64 to include the MBR qualifier,
 
                 matching the device type coffeescript file.
 
@@ -2200,8 +2187,7 @@
             - subject: "genericx86-64-ext: update name to include MBR qualifier"
               hash: d511fa372a606ddbc1814b35d109c4cc0aef57e2
               body: >
-                Update the long name for genericx86-64-ext to include the MBR
-                qualifier,
+                Update the long name for genericx86-64-ext to include the MBR qualifier,
 
                 matching the device type coffeescript file.
 
@@ -2370,8 +2356,7 @@
             - subject: "balena-config-vars: Provide FAT safe filesystem access alternatives"
               hash: 09ddd9c7d9e9cce2e9956d15644931d879ce0ad3
               body: >
-                The boot partition is currently a FAT filesystem that does not
-                support
+                The boot partition is currently a FAT filesystem that does not support
 
                 atomic writes. To prevent corruption, this commit introduces a fatrw
 
@@ -2388,8 +2373,7 @@
             - subject: "fatrw: Add recipe"
               hash: c8312e6a8a6b20d5534754ab2930463b302c87d4
               body: >
-                Builds a CLI application to perform atomic writes to FAT
-                filesystems.
+                Builds a CLI application to perform atomic writes to FAT filesystems.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -2458,8 +2442,7 @@
             - subject: "balena-api: On hostapp creation, set class to app"
               hash: 3bb4995b8bedcfe83b75c3ef6151725828dd1eb8
               body: >
-                Applications can be fleet, blocks or apps, and hostapps need to
-                be set
+                Applications can be fleet, blocks or apps, and hostapps need to be set
 
                 as apps.
               footer:
@@ -2488,8 +2471,7 @@
             - subject: "test: os: chrony: Double the wait for time skew test"
               hash: 756b5eba8d3b197f56688be030b522f94a628c42
               body: >
-                Including the 2min systemd watchdog timer, plus 60 attempts to
-                sync
+                Including the 2min systemd watchdog timer, plus 60 attempts to sync
 
                 the time via chronyc waitsync, it may take longer than expected to
 
@@ -2504,8 +2486,7 @@
             - subject: "os: tests: chrony: Wrap disable/enable NTP in test conditions"
               hash: 6d51bd39d02898a3a50f8b5ff133a283b0368463
               body: >
-                This allows us to catch if one of the enable/disable steps has
-                failed
+                This allows us to catch if one of the enable/disable steps has failed
 
                 and includes time to execute.
               footer:
@@ -2690,8 +2671,7 @@
             - subject: "balena-config-vars: Do not use cache in flasher images"
               hash: c99ac402222d3187f5b7c71d6a40400328fd3327
               body: >
-                Flasher images use an alternative configuration storage so skip
-                caching.
+                Flasher images use an alternative configuration storage so skip caching.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -2753,8 +2733,7 @@
                     - subject: 'Revert "patch: Increase timeout for worker connections"'
                       hash: 5e98079b8a44b2470c8edc9ac6e4ab65b9a6da96
                       body: >
-                        This reverts commit
-                        87a741fd22a78c190bec59fa6628de921ac2809f.
+                        This reverts commit 87a741fd22a78c190bec59fa6628de921ac2809f.
 
 
                         This change didn't actually help to resolve the original ETIMEDOUT
@@ -2864,8 +2843,7 @@
                     - subject: "core: worker: add retryOptions to executeCommand methods"
                       hash: 2f2d7a8b99fcaffc22d0032f9102e194160f7e1f
                       body: >
-                        The executeCommand family of methods default to retrying
-                        on failure. In
+                        The executeCommand family of methods default to retrying on failure. In
 
                         some cases, such as in the ssh-auth test in the cloud test suite, we
 
@@ -2958,8 +2936,7 @@
             - subject: "tests: cloud: fix production mode ssh test"
               hash: 916d400456ef2cb58f13c7b8b6e542c23b57e8c2
               body: >
-                This test was broken previously, and would fail with "All
-                configured
+                This test was broken previously, and would fail with "All configured
 
                 authentication methods failed" after a long delay caused by excessive
 
@@ -2991,8 +2968,7 @@
             - subject: Create empty configuration units
               hash: 7fa2152878de1f40df40dc6db74fc77e02480967
               body: >
-                By creating empty configuration units when no configuratin is
-                applied to
+                By creating empty configuration units when no configuratin is applied to
 
                 a service instead we avoid regenerating them at boot if stored in
 
@@ -3007,8 +2983,7 @@
             - subject: Make configuration units storage path a distro setting
               hash: a5a9b3cf31b92e31f91eb6d4c99c9a2cc42b1257
               body: >
-                This allows for specific devices to override the defaults, which
-                is to
+                This allows for specific devices to override the defaults, which is to
 
                 store configuration units on volatile memory re-generating them every
 
@@ -3028,8 +3003,7 @@
             - subject: "balena-configurable: Generate initial unit configuration file"
               hash: f59f2f1716f0c59ac4e21cb35ebf1b34ad8a945e
               body: >
-                Before starting services generate the initial unit configuration
-                file.
+                Before starting services generate the initial unit configuration file.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -3040,8 +3014,7 @@
             - subject: "balena-units-conf: Add script to generate configuration units"
               hash: 0de0d36727f13d8229e6f4936cc8ff14fdb4e204
               body: >
-                Separate the generation of configuration units before a service
-                has been
+                Separate the generation of configuration units before a service has been
 
                 started, from the processing of configuration changes.
               footer:
@@ -3066,8 +3039,7 @@
                 time"
               hash: a0bbe0038b2bf99f0845095c42a9dca517293049
               body: >
-                Currently `os-config-json` is also parsing `units-conf.json` at
-                runtime.
+                Currently `os-config-json` is also parsing `units-conf.json` at runtime.
 
                 This is expensive to do for smaller devices, so this commit performs the
 
@@ -3113,8 +3085,7 @@
             - subject: "balena-config-vars: Split static defaults into a different file"
               hash: bfe134f8dc24bb3bab5cef8e1b82a6844e1e5de3
               body: >
-                This allows to source the static configuration without having to
-                parse
+                This allows to source the static configuration without having to parse
 
                 config.json which is expensive for smaller devices.
               footer:
@@ -3150,8 +3121,7 @@
             - subject: "balena-config-vars: Cache environment in memory file"
               hash: fe1581bf347fd354e806eb617ee6c446d22b52cb
               body: >
-                Executing balena-config-vars is quite taxing for smaller
-                devices. For
+                Executing balena-config-vars is quite taxing for smaller devices. For
 
                 example a RaspberryPi Zero.
 
@@ -3402,8 +3372,7 @@
             - subject: "tests: os: config-json: fix race in udevRules test"
               hash: 8825d721ca64d523dc6faf8c317f4a09796457b6
               body: >
-                Readlink can fail when the path is non-existent, raising an
-                error and
+                Readlink can fail when the path is non-existent, raising an error and
 
                 making the udevRules test fail. Test that the link exists before
 
@@ -3458,8 +3427,7 @@
             - subject: "tests: os: modem: reduce time taken scanning for modems"
               hash: 7cb747bfadba14447cb682cfd15e0a15df0e3545
               body: >
-                Reduce the interval between scans as well as the maximum number
-                of scans
+                Reduce the interval between scans as well as the maximum number of scans
 
                 for modems, reducing the time spent waiting when no modem is present
 
@@ -3499,8 +3467,7 @@
                     - subject: "core: worker: simplify rebootDut"
                       hash: 55981700fb4c90a1f81192a44725f2c2d49e6135
                       body: >
-                        worker.rebootDut() contains retry logic using
-                        utils.waitUntil() wrapping
+                        worker.rebootDut() contains retry logic using utils.waitUntil() wrapping
 
                         this.executeCommandInHostOS(). The latter contains its own retry logic,
 
@@ -3519,8 +3486,7 @@
                     - subject: "core: worker: reduce interval in executeCommandInHostOS"
                       hash: 7f8b371b3035eed2b32011295768d5bec19ba1ba
                       body: >
-                        The default interval for retrying this command is 5s,
-                        with a total
+                        The default interval for retrying this command is 5s, with a total
 
                         timeout of 2m30s. Reduce the timeout to 1s to reduce latency for the
 
@@ -3567,8 +3533,7 @@
                     - subject: "core: worker: simplify rebootDut"
                       hash: 55981700fb4c90a1f81192a44725f2c2d49e6135
                       body: >
-                        worker.rebootDut() contains retry logic using
-                        utils.waitUntil() wrapping
+                        worker.rebootDut() contains retry logic using utils.waitUntil() wrapping
 
                         this.executeCommandInHostOS(). The latter contains its own retry logic,
 
@@ -3587,8 +3552,7 @@
                     - subject: "core: worker: reduce interval in executeCommandInHostOS"
                       hash: 7f8b371b3035eed2b32011295768d5bec19ba1ba
                       body: >
-                        The default interval for retrying this command is 5s,
-                        with a total
+                        The default interval for retrying this command is 5s, with a total
 
                         timeout of 2m30s. Reduce the timeout to 1s to reduce latency for the
 
@@ -3682,8 +3646,7 @@
             - subject: "balena-lib: release_finalize: Do not retag phase for ESR branch patch"
               hash: ffdcb572e75b6bddc890710a6c1e4702d08a86a7
               body: >
-                When we patch an ESR branch, for example from v2022.1.0 to
-                v2022.1.1,
+                When we patch an ESR branch, for example from v2022.1.0 to v2022.1.1,
 
                 do not update the next, current, sunset ESR  phases as they remain the
 
@@ -3702,8 +3665,7 @@
             - subject: "balena-lib: balena_lib_release_finalize: Pass the correct arguments"
               hash: e28b745d4ba121b639ba79dad2377f051fe5d3e2
               body: >
-                The balena_api_fetch_fleet_tag requires a slug as first
-                argument, not
+                The balena_api_fetch_fleet_tag requires a slug as first argument, not
 
                 a fleet that can contain the organization too.
               footer:
@@ -3716,8 +3678,7 @@
             - subject: "balena-lib: Tag ESR fleets with patch independent tags"
               hash: d51ecb6d91fe6ecf91de1ecde4fff700f7f88e67
               body: >
-                Otherwise patch updates of ESR branches move the ESR phase when
-                they
+                Otherwise patch updates of ESR branches move the ESR phase when they
 
                 should not. For example, if 2022.1.1 is current, 2022.1.2 is also
 
@@ -3736,8 +3697,7 @@
             - subject: "balena-lib: Check versions before finalizing"
               hash: 0ae1389a69b857b466b4eef81396d5f1b6bc4ae6
               body: >
-                Only allow to finalize draft releases that have matching semver
-                with
+                Only allow to finalize draft releases that have matching semver with
 
                 the device repository being deployed.
               footer:
@@ -3750,8 +3710,7 @@
             - subject: "balena-deploy-block: Do not always finalise on deploy"
               hash: 754833d6ef773b68a9eecafb426783ac70eb8767
               body: >
-                Introduce a new final step after draft deployment to finalise
-                releases.
+                Introduce a new final step after draft deployment to finalise releases.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -3762,8 +3721,7 @@
             - subject: "balena-deploy-block: Add OS version to contract"
               hash: 2c692984079215c2c916c5e4df79e200486be1ff
               body: >
-                If there is an OS contract, add the OS version we are building
-                for.
+                If there is an OS contract, add the OS version we are building for.
               footer:
                 Change-type: patch
                 change-type: patch
@@ -3784,8 +3742,7 @@
             - subject: "balena-lib: Build contracts"
               hash: b8c08faf2a86434793bcad67e063ade9754142ff
               body: >
-                Add a function to build all OS contracts and return the one for
-                the
+                Add a function to build all OS contracts and return the one for the
 
                 specified slug.
               footer:
@@ -3824,8 +3781,7 @@
             - subject: "balena-lib: Finalise release before tagging"
               hash: 2243ff38f3589c021c0013477b92e6888f57eba8
               body: >
-                This is so we can check that we are tagging the correct version
-                before
+                This is so we can check that we are tagging the correct version before
 
                 doing it, as tagging makes the release visible.
               footer:
@@ -3848,8 +3804,7 @@
             - subject: "balena-lib: Extract release finalization as function"
               hash: 969f6b941bd9fb34d82fbc0d48838b7b4898b2e1
               body: >
-                This allows it to be called from other context, like the OS
-                automation
+                This allows it to be called from other context, like the OS automation
 
                 test suite.
               footer:
@@ -3872,8 +3827,7 @@
             - subject: "balena-deploy: Fix header on balena_deploy_block()"
               hash: dbbf059bf9b8df60b7578c7a41e0678fbff60043
               body: >
-                The arguments to this function have been re-ordered but the
-                header had
+                The arguments to this function have been re-ordered but the header had
 
                 not been modified.
               footer:
@@ -3902,8 +3856,7 @@
     - subject: Add build and deploy workflow
       hash: 8479899afe7e69ced35ef851bacb7428fbb864c7
       body: >
-        This workflow will launch a Jenkins build and draft deploy job when a
-        new
+        This workflow will launch a Jenkins build and draft deploy job when a new
 
         tag is made.
       footer:
