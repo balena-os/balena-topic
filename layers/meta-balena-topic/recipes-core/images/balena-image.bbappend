@@ -3,6 +3,8 @@ DEPENDS += "balena-bootscript"
 # Add components that we need to boot
 IMAGE_INSTALL += "\
 	bootscript \
+	kernel-module-rtl88x2bu \
+	iperf3 \
 	${IMAGE_INSTALL_MACHINE_EXTRAS} \
 	"
 
