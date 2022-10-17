@@ -1,6 +1,13 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.105.11+rev2
+## (2022-10-17)
+
+* Add iperf for testing [Francois]
+* Jenkins autobuild same as balena [Francois]
+* correctly add wifi driver to image [Francois]
+
 # v2.105.11+rev1
 ## (2022-10-15)
 

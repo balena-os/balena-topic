@@ -1,4 +1,43 @@
 - commits:
+    - subject: Add iperf for testing
+      hash: 7039df4d1377dfbb69014711182d88946accd74b
+      body: ""
+      footer:
+        Changelog-entry: Add iperf for testing
+        changelog-entry: Add iperf for testing
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: Jenkins autobuild same as balena
+      hash: bab350d92986eb6b39a44c15435180ba7e93b343
+      body: |
+        Change the Jenkins build to use the same build script
+        as used by balena.
+      footer:
+        Changelog-entry: Jenkins autobuild same as balena
+        changelog-entry: Jenkins autobuild same as balena
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+    - subject: correctly add wifi driver to image
+      hash: 1f53571876cd927eb6d81056631a29653ed98f0a
+      body: |
+        Fix wifi driver not included in image due to incorrect use
+        of yocto config variable.
+        Adding image specific modules to IMAGE_INSTALL is correct.
+      footer:
+        Changelog-entry: correctly add wifi driver to image
+        changelog-entry: correctly add wifi driver to image
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois
+      nested: []
+  version: 2.105.11+rev2
+  title: ""
+  date: 2022-10-17T09:04:36.600Z
+- commits:
     - subject: Update build and deploy workflow to v0.0.12
       hash: 4d38e63278c9fcbb7e34ce1765e89aee6d286f5b
       body: |
