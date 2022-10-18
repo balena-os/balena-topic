@@ -1,6 +1,31 @@
 # v2.98.12
 ## (2022-06-18)
 
+# v2.105.13
+## (2022-10-18)
+
+
+<details>
+<summary> Update layers/meta-balena to b33d3aa9a17eabe4f88f6086fce008862ad43ba1 [renovate[bot]] </summary>
+
+> ## meta-balena-2.105.13
+> ### (2022-10-18)
+> 
+> * ntp: Remove race condition from directory creation [Alex Gonzalez]
+> 
+</details>
+
+
+<details>
+<summary> Update layers/meta-balena to bfb53e361ce9a3205e9c468f7c83b614acb3c52e [renovate[bot]] </summary>
+
+> ## meta-balena-2.105.13
+> ### (2022-10-18)
+> 
+> * ntp: Remove race condition from directory creation [Alex Gonzalez]
+> 
+</details>
+
 # v2.105.11+rev2
 ## (2022-10-17)
 
