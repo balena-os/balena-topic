@@ -1,4 +1,49 @@
 - commits:
+    - subject: Update layers/meta-balena to 6fe97ecc67ba4dc83fb5ff21d801e9062d4179d4
+      hash: 42c9b4e3e29590f71a8e7171e708d9fb678fafb4
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 6fe97ecc67ba4dc83fb5ff21d801e9062d4179d4
+        changelog-entry: Update layers/meta-balena to 6fe97ecc67ba4dc83fb5ff21d801e9062d4179d4
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "meta-resin-sumo: libical: Fix build QA error"
+              hash: a34583a3f5cbac25502ac9ad62f0d0073eb96511
+              body: >
+                Address the following build error:
+
+                ```
+
+                ERROR: libical-2.0.0-r0 do_package: QA Issue: libical: Files/directories were installed but not shipped in any package:
+
+                /usr/lib/cmake
+
+                /usr/lib/cmake/LibIcal
+
+                /usr/lib/cmake/LibIcal/LibIcalTargets.cmake
+
+                /usr/lib/cmake/LibIcal/LibIcalConfig.cmake
+
+                /usr/lib/cmake/LibIcal/LibIcalConfigVersion.cmake
+
+                /usr/lib/cmake/LibIcal/LibIcalTargets-noconfig.cmake
+
+                ```
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: meta-balena-2.105.20
+          title: ""
+          date: 2022-10-26T14:42:10.358Z
+  version: 2.105.20
+  title: ""
+  date: 2022-10-26T21:44:07.821Z
+- commits:
     - subject: add header to CHANGELOG file
       hash: 07e6dae8c379b8595c89851e052f3ac7b4cde3f0
       body: |
