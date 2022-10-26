@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v2.105.19+rev1
+## (2022-10-26)
+
+* add header to CHANGELOG file [Alex Gonzalez]
+
 # v2.98.12
 ## (2022-06-18)
 
