@@ -1,4 +1,31 @@
 - commits:
+    - subject: Update layers/meta-balena to 24deb5194be2c96b14f8bd4343555bf855f6ca06
+      hash: 5299927e77d54bcf0f0ed20297b46b037cc97013
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 24deb5194be2c96b14f8bd4343555bf855f6ca06
+        changelog-entry: Update layers/meta-balena to 24deb5194be2c96b14f8bd4343555bf855f6ca06
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: Update Docs Link Updated the link in the docs to the device-type
+                listings (on hub as SOT)
+              hash: c79adacfc30e36cf9bc548c9495dae5bfc4eb742
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Ryan Hampton (@rhampt) <rhampt@balena.io>
+                signed-off-by: Ryan Hampton (@rhampt) <rhampt@balena.io>
+              author: Ryan H
+              nested: []
+          version: meta-balena-2.105.22
+          title: ""
+          date: 2022-10-31T12:42:22.402Z
+  version: 2.105.22
+  title: ""
+  date: 2022-10-31T13:43:14.423Z
+- commits:
     - subject: Update contracts to edff7336f8c7fd074aed1fd087a595ee2ca05651
       hash: 351aa5c81ae1606fd6575c1eb372a7417e96566a
       body: Update contracts
