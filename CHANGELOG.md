@@ -1,6 +1,33 @@
 Change log
 -----------
 
+# v2.107.33
+## (2022-12-14)
+
+
+<details>
+<summary> Update layers/meta-balena to 9811fd442944eca14af2c590bb4dde64949f09b7 [renovate[bot]] </summary>
+
+> ## meta-balena-2.107.33
+> ### (2022-12-14)
+> 
+> * tests: hup: clean up inactive partition pre hup [rcooke-warwick]
+> 
+
+</details>
+
+
+<details>
+<summary> Update layers/meta-balena to 6dd2fc68bc13b2d8ad4527a1623da292828ed1c9 [renovate[bot]] </summary>
+
+> ## meta-balena-2.107.33
+> ### (2022-12-14)
+> 
+> * tests: hup: clean up inactive partition pre hup [rcooke-warwick]
+> 
+
+</details>
+
 # v2.107.31
 ## (2022-12-14)
 
