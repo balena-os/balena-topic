@@ -1,4 +1,33 @@
 - commits:
+    - subject: Update layers/meta-balena to 3a45aa111217e64ef6ab8cbd16d34a12ece49a3c
+      hash: 6bb20591ef78c7ce008ad544caea6de69b74b122
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 3a45aa111217e64ef6ab8cbd16d34a12ece49a3c
+        changelog-entry: Update layers/meta-balena to 3a45aa111217e64ef6ab8cbd16d34a12ece49a3c
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "flasher: output logs to serial console"
+              hash: 131893e433ef64a1f3b05dfcd44b0e022f13646d
+              body: >
+                Improve debugging experience of flasher service by outputting logs to
+
+                serial console.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Joseph Kogut <joseph@balena.io>
+                signed-off-by: Joseph Kogut <joseph@balena.io>
+              author: Joseph Kogut
+              nested: []
+          version: meta-balena-2.108.6
+          title: ""
+          date: 2022-12-27T20:53:27.624Z
+  version: 2.108.6
+  title: ""
+  date: 2022-12-27T22:11:56.445Z
+- commits:
     - subject: Update contracts to 4698e4ef55fdc61aa3df8d8494f2cbbd306b26c9
       hash: b354165f366c1d23112a3a311891b2a2b458117a
       body: Update contracts
