@@ -1,6 +1,36 @@
 Change log
 -----------
 
+# v2.108.16
+## (2023-01-09)
+
+
+<details>
+<summary> Update contracts to cbc450a40296e716e50344b3d625fb9a9b6975f6 [renovate[bot]] </summary>
+
+> ## contracts-2.0.38
+> ### (2023-01-07)
+> 
+> * Forecr DSBOARD NX2 Xavier NX eMMC: Add community device-type [Alexandru Costache]
+> 
+
+</details>
+
+* Update layers/meta-balena to 610fc18f387665f4077ce1bed538bd2da4ba516b [renovate[bot]]
+
+<details>
+<summary> Update contracts to d647331a48dfbc6d398139831054d41fa52f79da [renovate[bot]] </summary>
+
+> ## contracts-2.0.38
+> ### (2023-01-07)
+> 
+> * Forecr DSBOARD NX2 Xavier NX eMMC: Add community device-type [Alexandru Costache]
+> 
+
+</details>
+
+* Update layers/meta-balena to b75d73b4811e1bc37546d0e2329b6acb758852da [renovate[bot]]
+
 # v2.108.14
 ## (2023-01-05)
 

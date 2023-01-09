@@ -1,4 +1,66 @@
 - commits:
+    - subject: Update contracts to cbc450a40296e716e50344b3d625fb9a9b6975f6
+      hash: 052e0f9d54363682f1e0121a0134cacf0ef4e6c5
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to cbc450a40296e716e50344b3d625fb9a9b6975f6
+        changelog-entry: Update contracts to cbc450a40296e716e50344b3d625fb9a9b6975f6
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "Forecr DSBOARD NX2 Xavier NX eMMC: Add community device-type"
+              hash: 9845bc4266923d6f66c118f14f976780a3b925a6
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+          version: contracts-2.0.38
+          title: ""
+          date: 2023-01-07T16:16:43.024Z
+    - subject: Update layers/meta-balena to 610fc18f387665f4077ce1bed538bd2da4ba516b
+      hash: e120777bffc919956122c4674d2ba39393128a7c
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 610fc18f387665f4077ce1bed538bd2da4ba516b
+        changelog-entry: Update layers/meta-balena to 610fc18f387665f4077ce1bed538bd2da4ba516b
+      author: renovate[bot]
+      nested: []
+    - subject: Update contracts to d647331a48dfbc6d398139831054d41fa52f79da
+      hash: 9f49d0789cb32ac4994f13ae0b2175ec6ac26c1f
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to d647331a48dfbc6d398139831054d41fa52f79da
+        changelog-entry: Update contracts to d647331a48dfbc6d398139831054d41fa52f79da
+      author: renovate[bot]
+      nested:
+        - commits:
+            - subject: "Forecr DSBOARD NX2 Xavier NX eMMC: Add community device-type"
+              hash: 9845bc4266923d6f66c118f14f976780a3b925a6
+              body: ""
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alexandru Costache <alexandru@balena.io>
+                signed-off-by: Alexandru Costache <alexandru@balena.io>
+              author: Alexandru Costache
+          version: contracts-2.0.38
+          title: ""
+          date: 2023-01-07T16:16:43.024Z
+    - subject: Update layers/meta-balena to b75d73b4811e1bc37546d0e2329b6acb758852da
+      hash: 048ce38d6918298777bbe01730b273df8769b8f9
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to b75d73b4811e1bc37546d0e2329b6acb758852da
+        changelog-entry: Update layers/meta-balena to b75d73b4811e1bc37546d0e2329b6acb758852da
+      author: renovate[bot]
+      nested: []
+  version: 2.108.16
+  title: ""
+  date: 2023-01-09T13:44:30.767Z
+- commits:
     - subject: Update layers/meta-balena to 91b8ee4980b559c90ae3330bf8ebe1c526b26728
       hash: fa7805c9d1ee4f27b7b1746af350d8655c86723f
       body: Update layers/meta-balena
