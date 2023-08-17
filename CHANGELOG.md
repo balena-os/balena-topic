@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v3.2.0+rev1
+## (2023-08-17)
+
+* use upstream mobile-broadband-provider append file [Alex Gonzalez]
+
 # v3.2.0
 ## (2023-08-17)
 
