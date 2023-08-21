@@ -1,0 +1,28 @@
+From 91c0364479b932f473f72671c140d566dc758891 Mon Sep 17 00:00:00 2001
+From: Bogdan Togorean <bogdan.togorean@analog.com>
+Date: Tue, 3 Dec 2019 16:40:58 +0200
+Subject: [PATCH] ASoc: adi: Kconfig: Remove depends on for ADI reference
+ designs
+
+Audio ADI reference designs are used on some non ZYNQ or Microblaze
+platforms like ADRV2CRR-FMC Carrier Board so remove this dependency.
+
+Signed-off-by: Bogdan Togorean <bogdan.togorean@analog.com>
+---
+ sound/soc/adi/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/sound/soc/adi/Kconfig b/sound/soc/adi/Kconfig
+index 1ed3d0cc63b8..759072557c76 100644
+--- a/sound/soc/adi/Kconfig
++++ b/sound/soc/adi/Kconfig
+@@ -1,6 +1,5 @@
+ config SND_SOC_ADI
+ 	tristate "Audio support for Analog Devices reference designs"
+-	depends on MICROBLAZE || ARCH_ZYNQ || COMPILE_TEST
+ 	help
+ 	  Audio support for various reference designs by Analog Devices.
+ 
+-- 
+2.17.1
+

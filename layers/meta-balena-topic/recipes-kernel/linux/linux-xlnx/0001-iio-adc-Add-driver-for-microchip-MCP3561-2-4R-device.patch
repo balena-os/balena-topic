@@ -1,0 +1,861 @@
+From 94517b9d64af0f01b1cc41721cbd15b7b317ba88 Mon Sep 17 00:00:00 2001
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Date: Thu, 4 May 2023 15:33:39 +0200
+Subject: [PATCH] iio: adc: Add driver for microchip MCP3561/2/4R devices
+
+The MCP3564R is a 24-bit ADC with 8 multiplexed inputs. The MCP3561R is
+the same device with 2 inputs, the MCP3562R has 4 inputs. The device
+contains one ADC and a multiplexer to select the inputs to the ADC.
+To facilitate buffered reading, only channels that can be continuously
+sampled are exported to the IIO subsystem. The driver does not support
+buffered reading yet.
+
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+---
+ drivers/iio/adc/Kconfig    |  11 +
+ drivers/iio/adc/Makefile   |   1 +
+ drivers/iio/adc/mcp356xr.c | 798 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 810 insertions(+)
+ create mode 100644 drivers/iio/adc/mcp356xr.c
+
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index d875d469aad4..e3369c49a172 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -707,6 +707,17 @@ config MCP3422
+ 	  This driver can also be built as a module. If so, the module will be
+ 	  called mcp3422.
+ 
++config MCP356XR
++	tristate "Microchip Technology MCP3561/2/4R driver"
++	depends on SPI
++	default y
++	help
++	  Say yes here to build support for Microchip Technology's MCP3561R,
++	  MCP3562R, MCP3564R analog to digital converters.
++
++	  This driver can also be built as a module. If so, the module will be
++	  called mcp356xr.
++
+ config MCP3911
+ 	tristate "Microchip Technology MCP3911 driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index d0c323b0b62f..e1b132d39fb4 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -65,6 +65,7 @@ obj-$(CONFIG_MAX1363) += max1363.o
+ obj-$(CONFIG_MAX9611) += max9611.o
+ obj-$(CONFIG_MCP320X) += mcp320x.o
+ obj-$(CONFIG_MCP3422) += mcp3422.o
++obj-$(CONFIG_MCP356XR) += mcp356xr.o
+ obj-$(CONFIG_MCP3911) += mcp3911.o
+ obj-$(CONFIG_MEDIATEK_MT6360_ADC) += mt6360-adc.o
+ obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
+diff --git a/drivers/iio/adc/mcp356xr.c b/drivers/iio/adc/mcp356xr.c
+new file mode 100644
+index 000000000000..039e5cefe1d0
+--- /dev/null
++++ b/drivers/iio/adc/mcp356xr.c
+@@ -0,0 +1,798 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Driver for Microchip MCP3561/2/4R, ADC with 1, 2 or 4 differential or 2, 4 or
++ * 8 single-ended inputs. The chip has a single ADC unit that can be muxed to
++ * any external input, internal reference or internal temperature sensor.
++ *
++ * Copyright (C) 2023 Topic Embedded Products
++ *
++ * Datasheet and product information:
++ * https://www.microchip.com/en-us/product/MCP3564R
++ */
++
++#include <asm/unaligned.h>
++#include <linux/clk.h>
++#include <linux/completion.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/iio/iio.h>
++#include <linux/interrupt.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#define MCP396XR_REG_ADCDATA		0x00
++#define MCP396XR_REG_CONFIG0		0x01
++#define MCP396XR_REG_CONFIG1		0x02
++#define MCP396XR_REG_CONFIG2		0x03
++#define MCP396XR_REG_CONFIG3		0x04
++#define MCP396XR_REG_IRQ		0x05
++#define MCP396XR_REG_MUX		0x06
++#define MCP396XR_REG_SCAN		0x07
++#define MCP396XR_REG_TIMER		0x08
++#define MCP396XR_REG_OFFSETCAL		0x09
++#define MCP396XR_REG_GAINCAL		0x0a
++#define MCP396XR_REG_LOCK		0x0d
++#define MCP396XR_REG_CRCCFG		0x0f
++
++#define MCP396XR_FASTCMD_START		0x0a
++#define MCP396XR_FASTCMD_RESET		0x0e
++
++#define MCP396XR_STATUS_DR		BIT(2)
++
++#define MCP396XR_CMD_MASK_DEV_ADDR	GENMASK(7, 6)
++#define MCP396XR_CMD_MASK_REG_ADDR	GENMASK(5, 2)
++#define MCP396XR_CMD_MASK_TYPE		GENMASK(1, 0)
++
++#define MCP396XR_CMD_TYPE_FAST		0x0
++#define MCP396XR_CMD_TYPE_READ_STATIC	0x1
++#define MCP396XR_CMD_TYPE_WRITE_SEQ	0x2
++#define MCP396XR_CMD_TYPE_READ_SEQ	0x3
++
++#define MCP396XR_CONFIG0_VREF_SEL	BIT(7)
++#define MCP396XR_CONFIG0_PARTIAL_SHDN	BIT(6)
++#define MCP396XR_CONFIG0_CLK_SEL_MASK	GENMASK(5, 4)
++#define MCP396XR_CONFIG0_CS_SEL_MASK	GENMASK(3, 2)
++#define MCP396XR_CONFIG0_ADC_MODE	GENMASK(1, 0)
++
++#define MCP396XR_CONFIG1_AMCLK_PRE	GENMASK(7, 6)
++#define MCP396XR_CONFIG1_OSR		GENMASK(5, 2)
++#define MCP396XR_CONFIG1_DEFAULT	FIELD_PREP(MCP396XR_CONFIG1_OSR, 0x3)
++
++#define MCP396XR_CONFIG2_BOOST		GENMASK(7, 6)
++#define MCP396XR_CONFIG2_GAIN		GENMASK(5, 3)
++#define MCP396XR_CONFIG2_AZ_MUX		BIT(2)
++#define MCP396XR_CONFIG2_AZ_REF		BIT(1)
++#define MCP396XR_CONFIG2_RESERVED1	BIT(0)
++#define MCP396XR_CONFIG2_DEFAULT				\
++		(FIELD_PREP(MCP396XR_CONFIG2_BOOST, 0x2) |	\
++		 FIELD_PREP(MCP396XR_CONFIG2_GAIN, 0x1) |	\
++		 MCP396XR_CONFIG2_RESERVED1)
++
++#define MCP396XR_CONFIG3_CONV_MODE	GENMASK(7, 6)
++#define MCP396XR_CONFIG3_DATA_FORMAT	GENMASK(5, 4)
++#define MCP396XR_CONFIG3_CRC_FORMAT	BIT(3)
++#define MCP396XR_CONFIG3_EN_CRCCOM	BIT(2)
++#define MCP396XR_CONFIG3_EN_OFFCAL	BIT(1)
++#define MCP396XR_CONFIG3_EN_GAINCAL	BIT(0)
++#define MCP396XR_CONFIG3_DEFAULT				\
++		(FIELD_PREP(MCP396XR_CONFIG3_CONV_MODE, 0x1) |	\
++		 FIELD_PREP(MCP396XR_CONFIG3_DATA_FORMAT, 0x3))
++
++#define MCP396XR_CLK_SEL_EXTERNAL	0x1
++#define MCP396XR_CLK_SEL_INTERNAL	0x2
++
++#define MCP396XR_ADC_MODE_SHUTDOWN	0x1
++#define MCP396XR_ADC_MODE_STANDBY	0x2
++#define MCP396XR_ADC_MODE_CONVERSION	0x3
++
++#define MCP396XR_IRQ_ENABLE_FASTCMD	BIT(1)
++#define MCP396XR_IRQ_PUSH_PULL		BIT(2)
++
++#define MCP396XR_LOCK_PASSWORD		0xA5
++
++#define MCP396XR_INT_VREF_UV	2400000
++#define MCP396XR_MAX_CHANNELS	8
++#define MCP396XR_MAX_TRANSFER_SIZE	4
++/* Internal RC oscilator runs between 3.3 and 6.6 MHz, use the average value */
++#define MCP396XR_INTERNAL_CLOCK_FREQ	4950000
++
++enum chip_ids {
++	mcp3564r,
++	mcp3562r,
++	mcp3561r,
++};
++
++struct mcp356xr {
++	struct spi_device *spi;
++	struct mutex lock;
++	struct regulator *vref;
++	struct clk *clki;
++	struct completion sample_available;
++	u8 dev_addr;
++	u8 n_inputs;
++	u8 config[4];
++	int scale_avail[8 * 2]; /* 8 gain settings */
++	/* SPI transfer buffer */
++	u8 buf[1 + MCP396XR_MAX_TRANSFER_SIZE] ____cacheline_aligned;
++};
++
++static const int mcp356xr_oversampling_rates[] = {
++	32,	64,	128,	256,
++	512,	1024,	2048,	4096,
++	8192,	16384,	20480,	24576,
++	40960,	49152,	81920,	98304,
++};
++
++/* Transfers len bytes starting at address reg, results in adc->buf */
++static int mcp356xr_read(struct mcp356xr *adc, u8 reg, u8 len)
++{
++	int ret;
++	struct spi_transfer xfer = {
++		.tx_buf = adc->buf,
++		.rx_buf = adc->buf,
++		.len = len + 1,
++	};
++
++	adc->buf[0] = FIELD_PREP(MCP396XR_CMD_MASK_DEV_ADDR, adc->dev_addr) |
++		      FIELD_PREP(MCP396XR_CMD_MASK_REG_ADDR, reg) |
++		      MCP396XR_CMD_TYPE_READ_SEQ;
++	memset(adc->buf + 1, 0, len);
++
++	ret = spi_sync_transfer(adc->spi, &xfer, 1);
++	if (ret < 0)
++		return ret;
++
++	return ret;
++}
++
++static int mcp356xr_fast_command(struct mcp356xr *adc, u8 cmd)
++{
++	u8 buf = FIELD_PREP(MCP396XR_CMD_MASK_DEV_ADDR, adc->dev_addr) |
++		FIELD_PREP(MCP396XR_CMD_MASK_REG_ADDR, cmd) |
++		MCP396XR_CMD_TYPE_FAST;
++
++	return spi_write(adc->spi, &buf, 1);
++}
++
++static int mcp356xr_write(struct mcp356xr *adc, u8 reg, void *val, u8 len)
++{
++	int ret;
++	struct spi_transfer xfer = {
++		.tx_buf = adc->buf,
++		.rx_buf = adc->buf,
++		.len = len + 1,
++	};
++
++	adc->buf[0] = FIELD_PREP(MCP396XR_CMD_MASK_DEV_ADDR, adc->dev_addr) |
++		      FIELD_PREP(MCP396XR_CMD_MASK_REG_ADDR, reg) |
++		      MCP396XR_CMD_TYPE_WRITE_SEQ;
++	memcpy(adc->buf + 1, val, len);
++
++	ret = spi_sync_transfer(adc->spi, &xfer, 1);
++
++	return ret;
++}
++
++static int mcp356xr_write_u8(struct mcp356xr *adc, u8 reg, u8 value)
++{
++	return mcp356xr_write(adc, reg, &value, 1);
++}
++
++static int mcp356xr_update_config(struct mcp356xr *adc, u8 index, u8 value)
++{
++	int ret;
++
++	if (value == adc->config[index])
++		return 0;
++
++	ret = mcp356xr_write(adc, MCP396XR_REG_CONFIG0 + index, &value, 1);
++	if (ret < 0)
++		return ret;
++
++	adc->config[index] = value;
++	return 0;
++}
++
++static int mcp356xr_calc_scale_avail(struct mcp356xr *adc)
++{
++	int millivolts;
++	int i;
++	int *scale_avail = adc->scale_avail;
++
++	if (adc->vref) {
++		millivolts = regulator_get_voltage(adc->vref);
++		if (millivolts < 0)
++			return millivolts;
++	} else {
++		millivolts = MCP396XR_INT_VREF_UV;
++	}
++	millivolts /= 1000;
++
++	/* Gain setting 0 is 0.333x */
++	scale_avail[0] = millivolts * 3;
++	scale_avail[1] = 23; /* 23 bits for full scale */
++	/* Other gain settings are power-of-two */
++	for (i = 1; i < 8; i++) {
++		scale_avail[i * 2 + 0] = millivolts;
++		scale_avail[i * 2 + 1] = 22 + i;
++	}
++
++	return 0;
++}
++
++static int mcp356xr_set_oversampling_rate(struct mcp356xr *adc, int val)
++{
++	int i;
++	u8 cfg;
++
++	for (i = 0; i < ARRAY_SIZE(mcp356xr_oversampling_rates); ++i) {
++		if (mcp356xr_oversampling_rates[i] == val) {
++			cfg = adc->config[1] & ~MCP396XR_CONFIG1_OSR;
++			cfg |= FIELD_PREP(MCP396XR_CONFIG1_OSR, i);
++			return mcp356xr_update_config(adc, 1, cfg);
++		}
++	}
++
++	return -EINVAL;
++}
++
++static int mcp356xr_get_oversampling_rate(struct mcp356xr *adc)
++{
++	return mcp356xr_oversampling_rates[FIELD_GET(MCP396XR_CONFIG1_OSR,
++						     adc->config[1])];
++}
++
++static int mcp356xr_set_scale(struct mcp356xr *adc, int val, int val2)
++{
++	int millivolts = adc->scale_avail[2];
++	int gain;
++	u8 regval;
++
++	/* The scale is always below 1 */
++	if (val)
++		return -EINVAL;
++
++	if (!val2)
++		return -EINVAL;
++
++	/*
++	 * val2 is in 'micro' units, n = val2 / 1000000
++	 * the full-scale value is millivolts / n, corresponds to 2^23,
++	 * hence the gain = ((val2 / 1000000) << 23) / millivolts
++	 * Approximate ((val2 / 1000000) << 23) as (549755 * val2) >> 16
++	 * because 2 << (23 + 16) / 1000000 = 549755
++	 */
++	gain = DIV_ROUND_CLOSEST(millivolts, (549755 * val2) >> 16);
++	if (gain >= BIT(7))
++		return -EINVAL;
++
++	regval = adc->config[2] & ~MCP396XR_CONFIG2_GAIN;
++	if (gain)
++		regval |= FIELD_PREP(MCP396XR_CONFIG2_GAIN, ffs(gain));
++
++	return mcp356xr_update_config(adc, 2, regval);
++}
++
++/* Calculate AMCLK (audio master clock) */
++static long mcp356xr_get_amclk_freq(struct mcp356xr *adc)
++{
++	long result;
++
++	if (adc->clki) {
++		result = clk_get_rate(adc->clki);
++		if (result > 0) {
++			result >>= FIELD_GET(MCP396XR_CONFIG1_AMCLK_PRE,
++					    adc->config[1]);
++		}
++	} else {
++		result =  MCP396XR_INTERNAL_CLOCK_FREQ;
++	}
++
++	return result;
++}
++
++static int mcp356xr_get_samp_freq(struct mcp356xr *adc)
++{
++	long freq = mcp356xr_get_amclk_freq(adc);
++	int osr = mcp356xr_get_oversampling_rate(adc);
++
++	/* DMCLK runs at 1/4 of AMCLK, data rate is DMCLK/OSR */
++	return freq / (osr << 2);
++}
++
++static int mcp356xr_adc_conversion(struct mcp356xr *adc,
++				   struct iio_chan_spec const *channel,
++				   int *val)
++{
++	long freq = mcp356xr_get_amclk_freq(adc);
++	int osr = mcp356xr_get_oversampling_rate(adc);
++	/* Over-estimate timeout by a factor 2 */
++	int timeout_ms = DIV_ROUND_UP((osr << 2) * 2 * 1000, freq);
++	int ret;
++
++	/* Setup input mux (address field is the mux setting) */
++	ret = mcp356xr_write_u8(adc, MCP396XR_REG_MUX, channel->address);
++	if (ret)
++		return ret;
++
++	reinit_completion(&adc->sample_available);
++	/* Start conversion */
++	ret = mcp356xr_fast_command(adc, MCP396XR_FASTCMD_START);
++	if (ret)
++		return ret;
++
++	if (timeout_ms < 10)
++		timeout_ms = 10;
++	ret = wait_for_completion_interruptible_timeout(
++			&adc->sample_available, msecs_to_jiffies(timeout_ms));
++	if (ret == 0) {
++		/* Interrupt did not fire, check status and report */
++		dev_warn(&adc->spi->dev, "Timeout (%d ms)\n", timeout_ms);
++		ret = mcp356xr_read(adc, MCP396XR_REG_ADCDATA, 4);
++		if (!ret) {
++			/* Check if data-ready was asserted  */
++			if ((adc->buf[0] & MCP396XR_STATUS_DR))
++				return -ETIMEDOUT;
++		}
++	}
++
++	if (ret < 0)
++		return ret;
++
++	/*
++	 * We're using data format 0b11 (see datasheet). While the ADC output is
++	 * 24-bit, it allows over-ranging it and produces a 25-bit output in
++	 * this mode. Hence the "24".
++	 */
++	*val = sign_extend32(get_unaligned_be32(&adc->buf[1]), 24);
++
++	return 0;
++}
++
++static int mcp356xr_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	struct mcp356xr *adc = iio_priv(indio_dev);
++	int ret = -EINVAL;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*vals = mcp356xr_oversampling_rates;
++		*type = IIO_VAL_INT;
++		*length = ARRAY_SIZE(mcp356xr_oversampling_rates);
++		ret = IIO_AVAIL_LIST;
++		break;
++
++	case IIO_CHAN_INFO_SCALE:
++		*type = IIO_VAL_FRACTIONAL_LOG2;
++		*vals = adc->scale_avail;
++		*length = ARRAY_SIZE(adc->scale_avail);
++		ret = IIO_AVAIL_LIST;
++		break;
++	}
++
++	return ret;
++}
++
++static int mcp356xr_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *channel, int *val,
++			    int *val2, long mask)
++{
++	struct mcp356xr *adc = iio_priv(indio_dev);
++	int ret = -EINVAL;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret)
++			break;
++
++		ret = mcp356xr_adc_conversion(adc, channel, val);
++		if (ret >= 0)
++			ret = IIO_VAL_INT;
++		iio_device_release_direct_mode(indio_dev);
++		break;
++	case IIO_CHAN_INFO_SCALE:
++		ret = FIELD_GET(MCP396XR_CONFIG2_GAIN, adc->config[2]);
++		*val = adc->scale_avail[ret * 2 + 0];
++		*val2 = adc->scale_avail[ret * 2 + 1];
++		ret = IIO_VAL_FRACTIONAL_LOG2;
++		if (channel->type == IIO_TEMP) {
++			/* To obtain temperature scale, divide by 0.0002973 */
++			*val = 100 * ((*val * 100000) / 2973);
++		}
++		break;
++	case IIO_CHAN_INFO_OFFSET:
++		if (channel->type == IIO_TEMP) {
++			ret = FIELD_GET(MCP396XR_CONFIG2_GAIN, adc->config[2]);
++			/* temperature has 80 mV offset */
++			*val = (-80 << adc->scale_avail[ret * 2 + 1]) /
++						adc->scale_avail[ret * 2 + 0];
++			ret = IIO_VAL_INT;
++		}
++		break;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = mcp356xr_get_samp_freq(adc);
++		ret = IIO_VAL_INT;
++		break;
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*val = mcp356xr_get_oversampling_rate(adc);
++		ret = IIO_VAL_INT;
++		break;
++	}
++
++	return ret;
++}
++
++static int mcp356xr_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *channel, int val,
++			    int val2, long mask)
++{
++	struct mcp356xr *adc = iio_priv(indio_dev);
++	int ret = -EINVAL;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		ret = mcp356xr_set_oversampling_rate(adc, val);
++		break;
++	case IIO_CHAN_INFO_SCALE:
++		ret = mcp356xr_set_scale(adc, val, val2);
++		break;
++	}
++
++	return ret;
++}
++
++/*
++ * The "address" field corresponds to the MUX setting entry in table 5-15 in
++ * the datasheet. The scan_index is the index into this table.
++ */
++
++#define MCP396XR_SHARED_BY_ALL					\
++		.info_mask_shared_by_all = 			\
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |	\
++			BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
++		.info_mask_shared_by_all_available = 		\
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |	\
++			BIT(IIO_CHAN_INFO_SCALE)		\
++
++#define MCP396XR_VOLTAGE_CHANNEL(num)				\
++	{							\
++		.type = IIO_VOLTAGE,				\
++		.indexed = 1,					\
++		.channel = (num),				\
++		.address = ((num) << 4) | 0x08,			\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++		.info_mask_shared_by_type = 			\
++				BIT(IIO_CHAN_INFO_SCALE),	\
++		MCP396XR_SHARED_BY_ALL,				\
++		.scan_index = (num),				\
++	}
++
++#define MCP396XR_VOLTAGE_CHANNEL_DIFF(chan1, chan2)		\
++	{							\
++		.type = IIO_VOLTAGE,				\
++		.indexed = 1,					\
++		.channel = (chan1),				\
++		.channel2 = (chan2),				\
++		.address = ((chan1) << 4) | (chan2),		\
++		.differential = 1,				\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++		.info_mask_shared_by_type = 			\
++				BIT(IIO_CHAN_INFO_SCALE),	\
++		MCP396XR_SHARED_BY_ALL,				\
++		.scan_index = (chan1) / 2 + 8,			\
++	}
++
++#define MCP396XR_TEMP_CHANNEL					\
++	{							\
++		.type = IIO_TEMP,				\
++		.address = 0xDE,				\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++		.info_mask_shared_by_type = 			\
++				BIT(IIO_CHAN_INFO_SCALE) |	\
++				BIT(IIO_CHAN_INFO_OFFSET),	\
++		MCP396XR_SHARED_BY_ALL,				\
++		.scan_index = 12,				\
++		.datasheet_name = "TEMP",			\
++	}
++
++/* Internal voltage channels */
++#define MCP396XR_VOLTAGE_CHANNEL_INT(num, addr, name)		\
++	{							\
++		.type = IIO_VOLTAGE,				\
++		.indexed = 1,					\
++		.channel = (num),				\
++		.address = (addr),				\
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
++		.info_mask_shared_by_type = 			\
++				BIT(IIO_CHAN_INFO_SCALE),	\
++		MCP396XR_SHARED_BY_ALL,				\
++		.scan_index = (num),				\
++		.datasheet_name = (name),			\
++	}
++
++static const struct iio_chan_spec mcp3564r_channels[] = {
++	MCP396XR_VOLTAGE_CHANNEL(0),
++	MCP396XR_VOLTAGE_CHANNEL(1),
++	MCP396XR_VOLTAGE_CHANNEL(2),
++	MCP396XR_VOLTAGE_CHANNEL(3),
++	MCP396XR_VOLTAGE_CHANNEL(4),
++	MCP396XR_VOLTAGE_CHANNEL(5),
++	MCP396XR_VOLTAGE_CHANNEL(6),
++	MCP396XR_VOLTAGE_CHANNEL(7),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(0, 1),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(2, 3),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(4, 5),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(6, 7),
++	MCP396XR_TEMP_CHANNEL,
++	MCP396XR_VOLTAGE_CHANNEL_INT(13, 0x98, "AVDD"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(14, 0xF8, "VCM"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(15, 0x88, "OFFSET"),
++};
++
++static const struct iio_chan_spec mcp3562r_channels[] = {
++	MCP396XR_VOLTAGE_CHANNEL(0),
++	MCP396XR_VOLTAGE_CHANNEL(1),
++	MCP396XR_VOLTAGE_CHANNEL(2),
++	MCP396XR_VOLTAGE_CHANNEL(3),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(0, 1),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(2, 3),
++	MCP396XR_TEMP_CHANNEL,
++	MCP396XR_VOLTAGE_CHANNEL_INT(13, 0x98, "AVDD"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(14, 0xF8, "VCM"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(15, 0x88, "OFFSET"),
++};
++
++static const struct iio_chan_spec mcp3561r_channels[] = {
++	MCP396XR_VOLTAGE_CHANNEL(0),
++	MCP396XR_VOLTAGE_CHANNEL(1),
++	MCP396XR_VOLTAGE_CHANNEL_DIFF(0, 1),
++	MCP396XR_TEMP_CHANNEL,
++	MCP396XR_VOLTAGE_CHANNEL_INT(13, 0x98, "AVDD"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(14, 0xF8, "VCM"),
++	MCP396XR_VOLTAGE_CHANNEL_INT(15, 0x88, "OFFSET"),
++};
++
++static const struct iio_info mcp356xr_info = {
++	.read_raw = mcp356xr_read_raw,
++	.read_avail = mcp356xr_read_avail,
++	.write_raw = mcp356xr_write_raw,
++};
++
++/* Interrupt handler */
++static irqreturn_t mcp356xr_irq_handler(int irq, void *private)
++{
++	struct mcp356xr *adc = private;
++	int ret;
++
++	ret = mcp356xr_read(adc, MCP396XR_REG_ADCDATA, 4);
++	if (!ret) {
++		/* Check if data-ready bit is 0 (active) */
++		if (!(adc->buf[0] & MCP396XR_STATUS_DR))
++			complete(&adc->sample_available);
++	}
++
++	return IRQ_HANDLED;
++}
++
++static int mcp356xr_config(struct mcp356xr *adc, struct device_node *of_node)
++{
++	int ret;
++	u32 value;
++	u8 regval;
++
++	if (!of_property_read_u32(of_node, "device-addr", &value)) {
++		if (value > 3) {
++			dev_err(&adc->spi->dev,
++				"invalid device address (%u). Must be <3.\n",
++				value);
++			return -EINVAL;
++		}
++		adc->dev_addr = value;
++	} else {
++		/* Default address is "1" unless you special-order them */
++		adc->dev_addr = 0x1;
++	}
++	dev_dbg(&adc->spi->dev, "use device address %u\n", adc->dev_addr);
++
++	/*
++	 * Datasheet mentions this POR procedure:
++	 * - Write LOCK register to 0xA5
++	 * - Write IRQ register to 0x03
++	 * - Send a fast CMD full reset (1110)
++	 * - Reconfigure the chip as desired
++	 */
++	ret = mcp356xr_write_u8(adc, MCP396XR_REG_LOCK, MCP396XR_LOCK_PASSWORD);
++	if (ret)
++		return ret;
++
++	ret = mcp356xr_write_u8(adc, MCP396XR_REG_IRQ, 0x03);
++	if (ret)
++		return ret;
++
++	ret = mcp356xr_fast_command(adc, MCP396XR_FASTCMD_RESET);
++	if (ret)
++		return ret;
++
++	usleep_range(200, 400);
++
++	/* Default values */
++	regval = MCP396XR_CONFIG0_PARTIAL_SHDN | MCP396XR_ADC_MODE_SHUTDOWN;
++
++	if (!adc->vref) {
++		dev_dbg(&adc->spi->dev,
++			"use internal voltage reference (2.4V)\n");
++		regval |= MCP396XR_CONFIG0_VREF_SEL;
++	}
++
++	if (adc->clki) {
++		dev_dbg(&adc->spi->dev, "use external clock\n");
++		regval |= FIELD_PREP(MCP396XR_CONFIG0_CLK_SEL_MASK,
++					MCP396XR_CLK_SEL_EXTERNAL);
++	} else {
++		dev_dbg(&adc->spi->dev,
++			"use internal RC oscillator\n");
++		regval |= FIELD_PREP(MCP396XR_CONFIG0_CLK_SEL_MASK,
++					MCP396XR_CLK_SEL_INTERNAL);
++	}
++	adc->config[0] = regval;
++	adc->config[1] = MCP396XR_CONFIG1_DEFAULT;
++	adc->config[2] = MCP396XR_CONFIG2_DEFAULT;
++	adc->config[3] = MCP396XR_CONFIG3_DEFAULT;
++
++	ret = mcp356xr_write(adc, MCP396XR_REG_CONFIG0, adc->config,
++			     sizeof(adc->config));
++	if (ret)
++		return ret;
++
++	/* Enable fast commands, disable start-of-conversion interrupt */
++	regval = MCP396XR_IRQ_ENABLE_FASTCMD;
++	if (!of_property_read_bool(of_node, "drive-open-drain"))
++		regval |= MCP396XR_IRQ_PUSH_PULL;
++	ret = mcp356xr_write_u8(adc, MCP396XR_REG_IRQ, regval);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static void mcp356xr_reg_disable(void *reg)
++{
++	regulator_disable(reg);
++}
++
++static void mcp356xr_clk_disable(void *clk)
++{
++	clk_disable_unprepare(clk);
++}
++
++static int mcp356xr_probe(struct spi_device *spi)
++{
++	struct device *dev = &spi->dev;
++	struct iio_dev *indio_dev;
++	struct mcp356xr *adc;
++	enum chip_ids chip;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	adc = iio_priv(indio_dev);
++	adc->spi = spi;
++	mutex_init(&adc->lock);
++	init_completion(&adc->sample_available);
++
++	adc->vref = devm_regulator_get_optional(dev, "vref");
++	if (IS_ERR(adc->vref)) {
++		if (PTR_ERR(adc->vref) == -ENODEV) {
++			adc->vref = NULL;
++		} else {
++			return dev_err_probe(dev, PTR_ERR(adc->vref),
++					     "Failed to get vref regulator\n");
++		}
++	} else {
++		ret = regulator_enable(adc->vref);
++		if (ret)
++			return ret;
++
++		ret = devm_add_action_or_reset(dev, mcp356xr_reg_disable,
++					       adc->vref);
++		if (ret)
++			return ret;
++	}
++
++	adc->clki = devm_clk_get(dev, NULL);
++	if (IS_ERR(adc->clki)) {
++		if (PTR_ERR(adc->clki) == -ENOENT) {
++			adc->clki = NULL;
++		} else {
++			return dev_err_probe(dev, PTR_ERR(adc->clki),
++					     "Failed to get adc clk\n");
++		}
++	} else {
++		ret = clk_prepare_enable(adc->clki);
++		if (ret < 0)
++			return dev_err_probe(dev, ret,
++					     "Failed to enable adc clk\n");
++
++		ret = devm_add_action_or_reset(dev, mcp356xr_clk_disable,
++					       adc->clki);
++		if (ret)
++			return ret;
++	}
++
++	ret = mcp356xr_calc_scale_avail(adc);
++	if (ret)
++		return ret;
++
++	ret = mcp356xr_config(adc, dev->of_node);
++	if (ret)
++		return ret;
++
++	indio_dev->name = spi_get_device_id(spi)->name;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->info = &mcp356xr_info;
++	spi_set_drvdata(spi, indio_dev);
++
++	chip = (enum chip_ids)spi_get_device_id(spi)->driver_data;
++	switch (chip) {
++	case mcp3564r:
++		indio_dev->channels = mcp3564r_channels;
++		indio_dev->num_channels = ARRAY_SIZE(mcp3564r_channels);
++		break;
++	case mcp3562r:
++		indio_dev->channels = mcp3562r_channels;
++		indio_dev->num_channels = ARRAY_SIZE(mcp3562r_channels);
++		break;
++	case mcp3561r:
++		indio_dev->channels = mcp3561r_channels;
++		indio_dev->num_channels = ARRAY_SIZE(mcp3561r_channels);
++		break;
++	}
++
++	ret = devm_request_threaded_irq(dev, spi->irq, NULL,
++					mcp356xr_irq_handler,
++					IRQF_TRIGGER_LOW | IRQF_ONESHOT |
++					IRQF_SHARED,
++					spi->dev.driver->name, adc);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to allocate IRQ\n");
++
++	ret = devm_iio_device_register(dev, indio_dev);
++	return ret;
++}
++
++static const struct of_device_id mcp356xr_dt_ids[] = {
++	{ .compatible = "microchip,mcp3561r", .data = (void *)mcp3561r },
++	{ .compatible = "microchip,mcp3562r", .data = (void *)mcp3562r },
++	{ .compatible = "microchip,mcp3564r", .data = (void *)mcp3564r },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, mcp356xr_dt_ids);
++
++static const struct spi_device_id mcp356xr_id[] = {
++	{ "mcp3561r", mcp3561r },
++	{ "mcp3562r", mcp3562r },
++	{ "mcp3564r", mcp3564r },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, mcp356xr_id);
++
++static struct spi_driver mcp356xr_driver = {
++	.driver = {
++		.name = "mcp356xr",
++		.of_match_table = mcp356xr_dt_ids,
++	},
++	.probe = mcp356xr_probe,
++	.id_table = mcp356xr_id,
++};
++module_spi_driver(mcp356xr_driver);
++
++MODULE_AUTHOR("Mike Looijmans <mike.looijmans@topic.nl>");
++MODULE_DESCRIPTION("Microchip Technology MCP356XR");
++MODULE_LICENSE("GPL v2");
+-- 
+2.17.1
+

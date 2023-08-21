@@ -1,0 +1,88 @@
+From 900a456d26a34398046502ab3d9991bc43ba5b82 Mon Sep 17 00:00:00 2001
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Date: Wed, 21 Jun 2023 11:50:53 +0200
+Subject: [PATCH] net: dsa: mv88e6xxx: Configure port 0
+
+Port 0 configuration never actually happened, as it was considered
+"internal". Fix the logic (at least for our chip) and consider port 0
+an external one. This makes the call to the CMODE configuration
+actually arrive. Also arrange that RGMII configuration actually
+happens for port 0.
+
+Does not make the port work yet, but appears to be a step forward.
+
+Upstream-status: Inappropriate
+---
+ drivers/net/dsa/mv88e6xxx/chip.c |  4 ++--
+ drivers/net/dsa/mv88e6xxx/port.c | 23 ++++++++++++++---------
+ 2 files changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 0830d7bb7a00..78c6416a1dd1 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -463,7 +463,7 @@ static int mv88e6xxx_phy_is_internal(struct dsa_switch *ds, int port)
+ {
+ 	struct mv88e6xxx_chip *chip = ds->priv;
+ 
+-	return port < chip->info->num_internal_phys;
++	return port < chip->info->num_internal_phys && port != 0;
+ }
+ 
+ static int mv88e6xxx_port_ppu_updates(struct mv88e6xxx_chip *chip, int port)
+@@ -475,7 +475,7 @@ static int mv88e6xxx_port_ppu_updates(struct mv88e6xxx_chip *chip, int port)
+ 	 * report whether the port is internal.
+ 	 */
+ 	if (chip->info->family == MV88E6XXX_FAMILY_6250)
+-		return port < chip->info->num_internal_phys;
++		return port < chip->info->num_internal_phys && port != 0;
+ 
+ 	err = mv88e6xxx_port_read(chip, port, MV88E6XXX_PORT_STS, &reg);
+ 	if (err) {
+diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
+index a9f8ddc5143d..59c7c7827163 100644
+--- a/drivers/net/dsa/mv88e6xxx/port.c
++++ b/drivers/net/dsa/mv88e6xxx/port.c
+@@ -616,6 +616,8 @@ static int mv88e6xxx_port_set_cmode(struct mv88e6xxx_chip *chip, int port,
+ 		chip->ports[port].cmode = cmode;
+ 
+ 		lane = mv88e6xxx_serdes_get_lane(chip, port);
++		if (lane == -ENODEV)
++			return 0;
+ 		if (lane < 0)
+ 			return lane;
+ 
+@@ -645,18 +647,21 @@ int mv88e6390x_port_set_cmode(struct mv88e6xxx_chip *chip, int port,
+ int mv88e6390_port_set_cmode(struct mv88e6xxx_chip *chip, int port,
+ 			     phy_interface_t mode)
+ {
+-	if (port != 9 && port != 10)
++	if (port != 0 && port != 9 && port != 10)
+ 		return -EOPNOTSUPP;
+ 
+-	switch (mode) {
+-	case PHY_INTERFACE_MODE_NA:
++	if (mode == PHY_INTERFACE_MODE_NA)
+ 		return 0;
+-	case PHY_INTERFACE_MODE_XGMII:
+-	case PHY_INTERFACE_MODE_XAUI:
+-	case PHY_INTERFACE_MODE_RXAUI:
+-		return -EINVAL;
+-	default:
+-		break;
++
++	if (port == 9 || port == 10) {
++		switch (mode) {
++		case PHY_INTERFACE_MODE_XGMII:
++		case PHY_INTERFACE_MODE_XAUI:
++		case PHY_INTERFACE_MODE_RXAUI:
++			return -EINVAL;
++		default:
++			break;
++		}
+ 	}
+ 
+ 	return mv88e6xxx_port_set_cmode(chip, port, mode, false);
+-- 
+2.17.1
+
