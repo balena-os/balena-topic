@@ -33,3 +33,9 @@ ROOTFS_POSTPROCESS_COMMAND += "topicbalena_rootfs_postprocess; "
 # We need to increase the rootfs size to make space for additional drivers in ROOTFS. 
 # BalenaOS image has a 700MB max size defined in 'image_types_balena.bbclass'
 IMAGE_ROOTFS_SIZE="409600"
+
+# We require access to the git repository here, so we must run outside fakeroot
+do_addrevisioninfo() {
+	git rev-parse --verify --short HEAD >> ${IMAGE_ROOTFS}${sysconfdir}/revision
+}
+addtask do_addrevisioninfo before do_image after do_rootfs
