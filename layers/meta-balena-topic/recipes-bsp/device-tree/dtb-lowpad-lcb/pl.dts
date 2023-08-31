@@ -1,0 +1,606 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/phy/phy.h>
+#include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	/* This fragment causes the FPGA image to load */
+	fragment@0 {
+		target = <&fpga_full>;
+		__overlay__ {
+			firmware-name = "fpga.bin.@BITSTREAM@";
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+		__overlay__ {
+			gpio-key-power {
+				compatible = "gpio-keys";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				power {
+					label = "power";
+					gpios = <&gpio 115 GPIO_ACTIVE_LOW>; /* EMIO 37, active low */
+					linux,code = <116>; /* KEY_POWER */
+				};
+			};
+
+			leds-pl {
+				compatible = "gpio-leds";
+				user-led {
+					label = "pl-user:green";
+					gpios = <&gpio 83 GPIO_ACTIVE_LOW>; /* EMIO 5 */
+					linux,default-trigger = "mmc0"; /* Blink on eMMC activity */
+				};
+			};
+
+			reg_3v3_analog: regulator-3v3-a {
+				compatible = "regulator-fixed";
+				regulator-name = "3v3a";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+			};
+
+			reg_12v_lp: regulator-12v-lp {
+				compatible = "regulator-fixed";
+				regulator-name = "lp-12v";
+				regulator-min-microvolt = <12000000>;
+				regulator-max-microvolt = <12000000>;
+				gpio = <&gpio 110 GPIO_ACTIVE_HIGH>;
+				enable-active-high;
+				regulator-always-on;
+			};
+
+			reg_24v: regulator-24v-amp {
+				compatible = "regulator-fixed";
+				regulator-name = "24v";
+				regulator-min-microvolt = <24000000>;
+				regulator-max-microvolt = <24000000>;
+			};
+
+			/* Use S/PDIF transmitter as codec required by simple-audio-card */
+			playback_codec: playback-codec {
+				compatible = "linux,spdif-dit";
+				#sound-dai-cells = <0>;
+			};
+
+			/* Audio */
+			topic_pwm_audio: topic-pwm-audio {
+				compatible = "topic,pwm-audio";
+				dmas = <&axi_dmac_s 0>;
+				dma-names = "tx";
+				#sound-dai-cells = <0>;
+				enable-gpios = <&gpio 124 GPIO_ACTIVE_HIGH>; /* EMIO 46 to enable audio core */
+				mute-gpios = <&axi_gpio_eio 30 GPIO_ACTIVE_LOW>; /* Set nRESET to low to mute output */
+			};
+
+			speaker_amp: speaker-amplifier {
+				compatible = "simple-audio-amplifier";
+				/* nRESET of the amplifier chip */
+				// enable-gpios = <&axi_gpio_eio 30 GPIO_ACTIVE_HIGH>;
+				sound-name-prefix = "Speaker Amplifier";
+				/* 12V analog supply */
+				VCC-supply = <&reg_12v_lp>;
+			};
+
+			simple-audio {
+				compatible = "simple-audio-card";
+				simple-audio-card,name = "Simple-Audio";
+				simple-audio-card,widgets =
+					"Speaker", "Speaker";
+				simple-audio-card,routing =
+					"Speaker Amplifier INL", "spdif-out",
+					"Speaker Amplifier INR", "spdif-out",
+					"Speaker", "Speaker Amplifier OUTL",
+					"Speaker", "Speaker Amplifier OUTR";
+				simple-audio-card,aux-devs = <&speaker_amp>;
+
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				playback_link: simple-audio-card,dai-link@0 {
+					reg = <0>;
+					format = "i2s"; /* PWM? */
+
+					bitclock-master = <&p_cpu_dai>;
+					frame-master = <&p_cpu_dai>;
+					mclk-fs = <2048>;
+
+					p_cpu_dai: cpu {
+						/* Link to PWM audio controller and DMA */
+						sound-dai = <&topic_pwm_audio>;
+						clocks = <&si5345 0 7>;
+					};
+
+					p_codec_dai: codec {
+						sound-dai = <&playback_codec>;
+					};
+				};
+			};
+		};
+	};
+
+
+	fragment@2 {
+		target = <&amba>;
+		__overlay__ {
+			#address-cells = <2>;
+			#size-cells = <2>;
+			interrupt-parent = <&gic>;
+
+			/* FAN controller */
+			pl_fan_controller: fan-controller@a0003000 {
+				compatible = "topic,axi-pwm-fan-controller";
+				reg = <0x0 0xa0030000 0x0 0x10000>;
+				nr-fans = <1>;
+				clocks = <&zynqmp_clk PL1_REF>;
+				topic,initial-pwm = <100>; /* Run at 40% */
+				vcc-supply = <&reg_12v_lp>; /* Not used by driver yet */
+			};
+
+			/* temperature sensor on i2c Uses lm75 hwmon driver */
+			axi_iic_0: i2c@80000000 {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL0_REF>;
+				compatible = "xlnx,axi-iic-2.0", "xlnx,xps-iic-2.00.a";
+				interrupt-names = "iic2intc_irpt";
+				interrupt-parent = <&gic>;
+				interrupts = <0 89 4>; /* PL0 - 0 (89 + 0)*/
+				reg = <0x0 0x80000000 0x0 0x1000>;
+
+				tmp101pl: sensor@4a{
+					compatible = "ti,tmp101";
+					reg = <0x4a>;
+					vs-supply = <&reg_3v3_miami>;
+				};
+			};
+			/* I2C Key E */
+			axi_iic_1: i2c@a0000000 {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL1_REF>;
+				compatible = "xlnx,xps-iic-2.00.a";
+				interrupt-names = "iic2intc_irpt";
+				interrupt-parent = <&gic>;
+				interrupts = <0 104 4>; /* PL1 - 0 (104 + 0)*/
+				reg = <0x0 0xa0000000 0x0 0x1000>;
+
+			};
+			/* I2C Key B */
+			axi_iic_2: i2c@a0010000 {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL1_REF>;
+				compatible = "xlnx,xps-iic-2.00.a";
+				interrupt-names = "iic2intc_irpt";
+				interrupt-parent = <&gic>;
+				interrupts = <0 105 4>; /* PL1 - 1 (104 + 1) */
+				reg = <0x0 0xa0010000 0x0 0x1000>;
+
+			};
+			/* UART key E */
+			uart_axi_uartlite_0: serial@a0050000 {
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL1_REF>;
+				compatible = "xlnx,xps-uartlite-1.00.a";
+				current-speed = <115200>;
+				device_type = "serial";
+				interrupt-names = "interrupt";
+				interrupt-parent = <&gic>;
+				interrupts = <0 91 4>; /* PL0 - 2 (89+2) */
+				port-number = <0>;
+				reg = <0x0 0xa0050000 0x0 0x10000>;
+				xlnx,baudrate = <0x2580>;
+				xlnx,data-bits = <0x8>;
+				xlnx,odd-parity = <0x0>;
+				xlnx,s-axi-aclk-freq-hz-d = "99.999001";
+				xlnx,use-parity = <0x0>;
+			};
+			/* Real time gpio controller */
+			axi_gpio_eio: gpio@80010000 {
+				#gpio-cells = <2>;
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL0_REF>;
+				compatible = "xlnx,xps-gpio-1.00.a";
+				gpio-controller;
+				reg = <0x0 0x80010000 0x0 0x1000>;
+				xlnx,all-inputs = <0x0>;
+				xlnx,all-inputs-2 = <0x0>;
+				xlnx,all-outputs = <0x0>;
+				xlnx,all-outputs-2 = <0x0>;
+				xlnx,dout-default = <0x00000000>;
+				xlnx,dout-default-2 = <0x00000000>;
+				xlnx,gpio-width = <32>;
+				xlnx,gpio2-width = <24>;
+				xlnx,interrupt-present = <0x0>;
+				xlnx,is-dual = <1>;
+				xlnx,tri-default = <0xFFFFFFFF>;
+				xlnx,tri-default-2 = <0xFFFFFFFF>;
+				/* According to the README in the fpga image, these are the line names */
+				gpio-line-names = \
+					"BUMPER0_11", "BUMPER0_12", "BUMPER0_33", "BUMPER0_34",
+					"BUMPER1_11", "BUMPER1_12", "BUMPER1_33", "BUMPER1_34",
+					"BUMPER2_11", "BUMPER2_12", "BUMPER2_33", "BUMPER2_34",
+					"BUMPER3_11", "BUMPER3_12", "BUMPER3_33", "BUMPER3_34",
+					"EMER_STOP0_11", "EMER_STOP0_12", "EMER_STOP0_21", "EMER_STOP0_22",
+					"EMER_STOP1_11", "EMER_STOP1_12", "EMER_STOP1_21", "EMER_STOP1_22",
+					"WDI", "WD_EN", "nWDI_EN", "ADC_IRQ_IMON",
+					"AUDIO_CNRL_nCLIP", "AUDIO_CNRL_nFAULT", "AUDIO_CNRL_nRESET", "AUDIO_CNRL_nOTW",
+					"adc_irq_loadcell", "INPUT_24V_0", "INPUT_24V_1", "INPUT_24V_2",
+					"INPUT_24V_3", "INPUT_24V_4", "INPUT_24V_5", "INPUT_24V_6",
+					"OUTPUT_24V_0", "OUTPUT_24V_1", "OUTPUT_24V_2", "OUTPUT_24V_3",
+					"OUTPUT_24V_4", "OUTPUT_24V_5", "OUTPUT_24V_6", "OUTPUT_24V_7",
+					"LED_SUPPLY_EN", "LED_SUPPLY_PGOOD", "LIDAR0_OSSD0", "LIDAR0_OSSD1",
+					"LIDAR1_OSSD0", "LIDAR1_OSSD1", "LIDAR2_OSSD0", "LIDAR2_OSSD1";
+				wdt-wdi {
+					/* Enables the WDT timer signal from FPGA to watchdog */
+					gpio-hog;
+					gpios = <24 0>;
+					output-high;
+					line-name = "WDI";
+				};
+				wdt-wden {
+					/* Enables the WDT */
+					gpio-hog;
+					gpios = <25 0>;
+					output-high;
+					line-name = "WD_EN";
+				};
+				wdt-nwdoen {
+					/* Allows the FET_EN_3V3 to go high */
+					gpio-hog;
+					gpios = <26 0>;
+					output-low;
+					line-name = "nWDO_EN";
+				};
+			};
+
+			/* SPI channel for ADCs */
+			axi_quad_spi_1: spi@80020000 {
+				compatible = "xlnx,xps-spi-2.00.a";
+				interrupt-parent = <&gic>;
+				interrupts = <0 92 4>; /* PL0 - 3 (89 + 3) */
+				reg = <0x0 0x80020000 0x0 0x10000>;
+				clock-names = "s_axi_aclk";
+				clocks = <&zynqmp_clk PL0_REF>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				is-dual = <0>;
+				num-cs = <3>;
+				fifo-size = <16>;
+				bits-per-word = <8>;
+				adc@0 { /* Load cell */
+					compatible = "microchip,mcp3564r";
+					reg = <0>;
+					device-addr = <1>;
+					spi-max-frequency = <20000000>;
+					label = "adc-load";
+					vref-supply = <&reg_3v3_analog>; /* Uses 3V3 reference */
+					interrupt-parent = <&gpio>;
+					interrupts = <122 IRQ_TYPE_LEVEL_LOW>; /* EMIO 44, shared */
+					drive-open-drain;
+				};
+				adc@1 { /* MCB current */
+					/* Chip select has wrong voltage, doesn't work */
+					compatible = "microchip,mcp3564r";
+					reg = <1>;
+					device-addr = <1>;
+					spi-max-frequency = <20000000>;
+					label = "adc-mcb-curr";
+					/* Use internal reference */
+					interrupt-parent = <&gpio>;
+					interrupts = <122 IRQ_TYPE_LEVEL_LOW>; /* EMIO 44, shared */
+					drive-open-drain;
+				};
+			};
+
+			axi_dmac_s: axi_dmac@a0060000 {
+				compatible = "adi,axi-dmac-1.00.a";
+				reg = <0 0xa0060000 0 0x10000>;
+				interrupt-parent = <&gic>;
+				interrupts = <0 106 4>; /* PL1 - 2 : 104 + 2 */
+				clock-names = "s_axi_aclk", "m_dest_axi_aclk", "s_axis_aclk";
+				clocks = <&zynqmp_clk PL1_REF>, <&zynqmp_clk PL1_REF>, <&zynqmp_clk PL1_REF>;
+				#dma-cells = <1>;
+				adi,channels {
+					#size-cells = <0>;
+					#address-cells = <1>;
+					dma-channel@0 {
+						reg = <0>;
+						adi,source-bus-width = <128>;
+						adi,source-bus-type = <0>; /* ADI_AXI_DMAC_TYPE_MM_AXI */
+						adi,destination-bus-width = <32>;
+						adi,destination-bus-type = <1>; /* AXI_DMAC_TYPE_AXI_STREAM */
+					};
+				};
+			};
+		};
+	};
+
+	fragment@4 {
+		/* GEM 0 is connected via GMII to PCS/PMA 1000-BaseX interface */
+		target = <&gem0>;
+		__overlay__ {
+			status = "disabled"; /* Doesn't work, so disable for now */
+			phy-handle = <&gem0phy3>;
+			phy-mode = "gmii";
+			mdio {
+				status = "okay";
+				#address-cells = <1>;
+				#size-cells = <0>;
+				/* Add 100 ms extra delay */
+				reset-gpios = <&gpio 125 GPIO_ACTIVE_HIGH>; /* EMIO 47 */
+				reset-delay-us = <1000>;
+				reset-post-delay-us = <100000>;
+				gem0phy3: gem0phy@3 {
+					reg = <3>;
+					device_type = "ethernet-phy";
+					xlnx,phy-type = <5>; /* XAE_PHY_TYPE_1000BASE_X */
+				};
+			};
+		};
+	};
+
+	fragment@5 {
+		target = <&spi0>; /* PS SPI 0 (not QSPI) */
+		__overlay__ {
+			status = "okay";
+			num-cs = <1>;
+			imu0: imu@0 {
+				compatible = "st,lsm6dso";
+				reg = <0>;
+				interrupt-parent = <&gpio>;
+				interrupts = <91 IRQ_TYPE_LEVEL_LOW>, <92 IRQ_TYPE_LEVEL_LOW>; /* EMIO 13 (+78), EMIO 14 */
+				spi-max-frequency = <10000000>;
+				label = "imu0";
+				vdd-supply = <&reg_1v8_miami>;
+				vddio-supply = <&reg_1v8_miami>;
+			};
+		};
+	};
+
+	fragment@6 {
+		target = <&spi1>; /* PS SPI 1 (not QSPI) */
+		__overlay__ {
+			status = "okay";
+			num-cs = <1>;
+			imu1: imu@0 {
+				compatible = "st,lsm6dso";
+				reg = <0>;
+				interrupt-parent = <&gpio>;
+				interrupts = <93 IRQ_TYPE_LEVEL_LOW>, <94 IRQ_TYPE_LEVEL_LOW>; /* EMIO 15 (+78), EMIO 16 */
+				spi-max-frequency = <10000000>;
+				label = "imu1";
+				vdd-supply = <&reg_1v8_miami>;
+				vddio-supply = <&reg_1v8_miami>;
+			};
+		};
+	};
+
+	/*
+	 * Devices on this bus require level shifters, which the FPGA enables.
+	 * The PCIe and USB (at least) depend on the FPGA being programmed,
+	 * as a result, we cannot use these devices and the I2C bus they're
+	 * connected to.
+	 */
+	fragment@7 {
+		target = <&i2c0>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@8 {
+		target = <&pcie>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@9 {
+		target = <&usb1>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@10 {
+		target = <&dwc3_1>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@11 {
+		target = <&gem1>;
+		__overlay__ {
+			status = "okay";
+			phy-connection-type = "sgmii";
+			phy-mode = "sgmii";
+			fixed-link {
+				speed = <1000>;
+				full-duplex;
+				pause;
+			};
+
+			mdio {
+				status = "okay";
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				switch0: switch@0 {
+					compatible = "marvell,mv88e6190";
+					reg = <0>;
+					reset-gpios = <&gpio 112 GPIO_ACTIVE_LOW>; /* EMIO 34 (+ 78) */
+					interrupt-parent = <&gpio>;
+					interrupts = <121 IRQ_TYPE_LEVEL_LOW>; /* EMIO 43 */
+					mdio {
+						#address-cells = <1>;
+						#size-cells = <0>;
+						switch0phy1: switch0phy1@1 {
+							reg = <1>;
+						};
+						switch0phy2: switch0phy2@2 {
+							reg = <2>;
+						};
+						switch0phy3: switch0phy3@3 {
+							reg = <3>;
+						};
+						switch0phy4: switch0phy4@4 {
+							reg = <4>;
+						};
+						switch0phy5: switch0phy5@5 {
+							reg = <5>;
+						};
+						switch0phy6: switch0phy6@6 {
+							reg = <6>;
+						};
+						switch0phy7: switch0phy7@7 {
+							reg = <7>;
+						};
+						switch0phy8: switch0phy8@8 {
+							reg = <8>;
+						};
+					};
+
+					mdio1 {
+						compatible = "marvell,mv88e6xxx-mdio-external";
+						#address-cells = <1>;
+						#size-cells = <0>;
+						reset-gpios = <&gpio 114 GPIO_ACTIVE_LOW>; /* EMIO 36 (+ 78) */
+						/* 100ns, 15 ms */
+						reset-delay-us = <1000>; /* 100 ns reset duration, but I don't trust the analog circuit, hence 1ms */
+						reset-post-delay-us = <16000>; /* Access to SMI registers 15 ms after reset */
+						switch1phy0: switch1phy0@0 {
+							reg = <0>;
+							device_type = "ethernet-phy";
+							/* Disable EEE advertisement */
+							eee-broken-100tx;
+							eee-broken-1000t;
+						};
+					};
+
+					ports {
+						#address-cells = <0x1>;
+						#size-cells = <0x0>;
+
+						port@0 {
+							reg = <0>;
+							label = "swp0";
+							/* External PHY */
+							phy-handle = <&switch1phy0>;
+							phy-mode = "rgmii";
+						};
+
+						port@1 {
+							reg = <1>;
+							label = "swp1";
+							phy-handle = <&switch0phy1>;
+						};
+
+						port@2 {
+							reg = <2>;
+							label = "swp2";
+							phy-handle = <&switch0phy2>;
+						};
+
+						port@3 {
+							reg = <3>;
+							label = "swp3";
+							phy-handle = <&switch0phy3>;
+						};
+
+						port@4 {
+							reg = <4>;
+							label = "swp4";
+							phy-handle = <&switch0phy4>;
+						};
+
+						port@5 {
+							reg = <5>;
+							label = "swp5";
+							phy-handle = <&switch0phy5>;
+						};
+
+						port@6 {
+							reg = <6>;
+							label = "swp6";
+							phy-handle = <&switch0phy6>;
+						};
+
+						port@7 {
+							reg = <7>;
+							label = "swp7";
+							phy-handle = <&switch0phy7>;
+						};
+
+						port@8 {
+							reg = <8>;
+							label = "swp8";
+							phy-handle = <&switch0phy8>;
+						};
+
+						/* Port 9 to PL */
+						port@9 {
+							reg = <9>;
+							phy-mode = "1000base-x";
+							/* ethernet = <&gem0>; */
+							label = "swp9";
+							status = "disabled"; /* Doesn't work, so disable for now */
+
+							fixed-link {
+								speed = <1000>;
+								full-duplex;
+								pause;
+							};
+						};
+
+						/* Port 10 to PS GTR */
+						port@a {
+							reg = <10>;
+							phy-mode = "sgmii";
+							ethernet = <&gem1>;
+							label = "cpu";
+
+							fixed-link {
+								speed = <1000>;
+								full-duplex;
+								pause;
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+	fragment@12 {
+		target = <&can0>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+	fragment@13 {
+		target = <&can1>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@14 {
+		target = <&gpio>;
+		__overlay__ {
+			smarc-vin-pwr-bad {
+				gpio-hog;
+				gpios = <117 0>; /* EMIO 39 */
+				output-high;
+				line-name = "smarc_vin_pwr_bad";
+			};
+		};
+	};
+};
