@@ -1,5 +1,8 @@
 DEPENDS += "balena-bootscript"
 
+BALENA_BOOT_BIN ?= ""
+DEPENDS += "${BALENA_BOOT_BIN}"
+
 # Add components that we need to boot
 IMAGE_INSTALL += "\
 	bootscript \
@@ -10,6 +13,7 @@ IMAGE_INSTALL += "\
 
 BALENA_EXTRA_BOOT_FILES:zynqmp = "boot.bin:/boot.bin u-boot.itb:/u-boot.itb balena-bootscript.scr:/boot.scr"
 BALENA_EXTRA_BOOT_FILES:zynq = "boot.bin:/boot.bin u-boot.img:/u-boot.img balena-bootscript.scr:/boot.scr"
+BALENA_EXTRA_BOOT_FILES:lcbzu9 = "lcb-boot.bin:/boot.bin u-boot.itb:/u-boot.itb balena-bootscript.scr:/boot.scr"
 BALENA_BOOT_PARTITION_FILES:append = " ${BALENA_EXTRA_BOOT_FILES}"
 
 DEVICETREELINKS ??= "system.dtb ${DEVICETREE}"
