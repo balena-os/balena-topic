@@ -6,13 +6,11 @@ COMPATIBLE_MACHINE = ".*"
 
 BITSTREAM:tdpzu9 = "fpga-image-lowpad-lcb"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-
-PV = "45+110a993"
+PV = "47+6a2b89e"
 FPGA_BITFILE = "fpga-image-lowpad-lcb-lcb-${PV}.bit"
+BOARD_DESIGN_URI = "https://topic.nl/downloads/${FPGA_BITFILE}.xz"
 
-SRC_URI = "file://fpga-image-lowpad-lcb-lcb-${PV}.bit.xz"
-SRC_URI[sha256sum] = "fd03f553151b75da41afd34e92c83f65bbab0a682fd4ebb4d5fb8937ce7e785a"
+SRC_URI[sha256sum] = "c4a148e1d14a5b372d35baf24589ab62b98db93a43c445976b1907ed30b52b76"
 
 PKGV = "${PV}"
 S = "${WORKDIR}"
@@ -20,6 +18,5 @@ B = "${S}"
 
 # Nothing to build
 do_compile() {
-    rm -f fpga.bit
-    ln ${FPGA_BITFILE}.bit fpga.bit
+    cp ${FPGA_BITFILE} fpga.bit
 }
