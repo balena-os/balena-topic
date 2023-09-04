@@ -32,6 +32,10 @@ distribution is [supported](https://docs.yoctoproject.org/singleindex.html#suppo
 
 Additional host tools need to be installed for native builds to work.
 
+* Install the "npm" package, doing it like this circumvents issues with broken dependencies:
+  sudo apt-get install nodejs-dev node-gyp libssl1.0-dev
+  sudo apt-get install npm
+
 * Run the barys build script:
   `./balena-yocto-scripts/build/barys`
 
