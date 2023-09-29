@@ -1,0 +1,45 @@
+From 308ffacd4f51a512f7933068e192d0f17b48cc9b Mon Sep 17 00:00:00 2001
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Date: Mon, 1 May 2023 11:47:35 +0200
+Subject: [PATCH] rtc-pcf85363: Allow to wake up system without IRQ
+
+When wakeup-source is set in the devicetree, set up the device for
+using the output as interrupt instead of clock.
+---
+ drivers/rtc/rtc-pcf85363.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/rtc/rtc-pcf85363.c b/drivers/rtc/rtc-pcf85363.c
+index bb3e9ba75f6c..886cac1bc5d1 100644
+--- a/drivers/rtc/rtc-pcf85363.c
++++ b/drivers/rtc/rtc-pcf85363.c
+@@ -400,18 +400,22 @@ static int pcf85363_probe(struct i2c_client *client,
+ 	pcf85363->rtc->range_max = RTC_TIMESTAMP_END_2099;
+ 	clear_bit(RTC_FEATURE_ALARM, pcf85363->rtc->features);
+ 
+-	if (client->irq > 0) {
++	if (client->irq > 0 || device_property_read_bool(&client->dev,
++							 "wakeup-source")) {
+ 		regmap_write(pcf85363->regmap, CTRL_FLAGS, 0);
+ 		regmap_update_bits(pcf85363->regmap, CTRL_PIN_IO,
+ 				   PIN_IO_INTA_OUT, PIN_IO_INTAPM);
++		device_init_wakeup(&client->dev, true);
++		set_bit(RTC_FEATURE_ALARM, pcf85363->rtc->features);
++	}
++
++	if (client->irq > 0) {
+ 		ret = devm_request_threaded_irq(&client->dev, client->irq,
+ 						NULL, pcf85363_rtc_handle_irq,
+ 						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+ 						"pcf85363", client);
+ 		if (ret)
+-			dev_warn(&client->dev, "unable to request IRQ, alarms disabled\n");
+-		else
+-			set_bit(RTC_FEATURE_ALARM, pcf85363->rtc->features);
++			dev_warn(&client->dev, "unable to request IRQ, alarm not functional\n");
+ 	}
+ 
+ 	ret = devm_rtc_register_device(pcf85363->rtc);
+-- 
+2.17.1
+

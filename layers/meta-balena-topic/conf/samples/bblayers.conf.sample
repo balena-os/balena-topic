@@ -20,4 +20,5 @@ BBLAYERS ?= " \
     ${TOPDIR}/../layers/meta-xilinx/meta-xilinx-bsp \
     ${TOPDIR}/../layers/meta-xilinx/meta-xilinx-core \
     ${TOPDIR}/../layers/meta-topic \
+    ${TOPDIR}/../layers/meta-lowpad-lcb \
     "

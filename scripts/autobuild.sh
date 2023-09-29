@@ -9,7 +9,7 @@ mkdir -p ~/.balena/
 touch ~/.balena/token
 mkdir -p build/artefacts
 
-for m in t*.coffee
+for m in *.coffee
 do
 	MACHINE=`basename $m .coffee`
 	./balena-yocto-scripts/build/balena-build.sh -d ${MACHINE} -s ~/shared_downloads_and_sstate

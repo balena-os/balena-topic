@@ -1,0 +1,74 @@
+From 00c17b90fcb014d40bad436166e04188f96c5a84 Mon Sep 17 00:00:00 2001
+From: Rodrigo Alencar <7062044+rodrigo455@users.noreply.github.com>
+Date: Wed, 11 Sep 2019 15:58:22 -0300
+Subject: [PATCH] dma: axi-dmac: simple device_config operation implemented
+
+dmaengine_slave_config is called by dmaengine_pcm_hw_params when using
+axi-i2s with axi-dmac. If device_config is NULL, -ENOSYS  is returned,
+which breaks the snd_pcm_hw_params function.
+This is a fix for the error:
+
+$ aplay -D plughw:ADAU1761 /usr/share/sounds/alsa/Front_Center.wav
+Playing WAVE '/usr/share/sounds/alsa/Front_Center.wav' : Signed 16 bit
+Little Endian, Rate 48000 Hz, Mono
+axi-i2s 43c20000.axi-i2s: ASoC: 43c20000.axi-i2s hw params failed: -38
+aplay: set_params:1403: Unable to install hw params:
+ACCESS:  RW_INTERLEAVED
+FORMAT:  S16_LE
+SUBFORMAT:  STD
+SAMPLE_BITS: 16
+FRAME_BITS: 16
+CHANNELS: 1
+RATE: 48000
+PERIOD_TIME: 125000
+PERIOD_SIZE: 6000
+PERIOD_BYTES: 12000
+PERIODS: 4
+BUFFER_TIME: 500000
+BUFFER_SIZE: 24000
+BUFFER_BYTES: 48000
+TICK_TIME: 0
+
+Signed-off-by: Rodrigo Alencar <alencar.fmce@imbel.gov.br>
+(cherry picked from commit 5f6f0b22947e0682ce75f0e56eb49ca5c1ceecb7)
+---
+ drivers/dma/dma-axi-dmac.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/drivers/dma/dma-axi-dmac.c b/drivers/dma/dma-axi-dmac.c
+index 5161b73c30c4..f2894ded3c2f 100644
+--- a/drivers/dma/dma-axi-dmac.c
++++ b/drivers/dma/dma-axi-dmac.c
+@@ -573,6 +573,21 @@ static struct dma_async_tx_descriptor *axi_dmac_prep_slave_sg(
+ 	return vchan_tx_prep(&chan->vchan, &desc->vdesc, flags);
+ }
+ 
++static int axi_dmac_device_config(struct dma_chan *c,
++			struct dma_slave_config *slave_config)
++{
++	struct axi_dmac_chan *chan = to_axi_dmac_chan(c);
++	struct axi_dmac *dmac = chan_to_axi_dmac(chan);
++
++	/* no configuration required, a sanity check is done instead */
++	if (slave_config->direction != chan->direction) {
++		dev_err(dmac->dma_dev.dev, "Direction not supported by this DMA Channel");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static struct dma_async_tx_descriptor *axi_dmac_prep_dma_cyclic(
+ 	struct dma_chan *c, dma_addr_t buf_addr, size_t buf_len,
+ 	size_t period_len, enum dma_transfer_direction direction,
+@@ -956,6 +971,7 @@ static int axi_dmac_probe(struct platform_device *pdev)
+ 	dma_dev->device_tx_status = dma_cookie_status;
+ 	dma_dev->device_issue_pending = axi_dmac_issue_pending;
+ 	dma_dev->device_prep_slave_sg = axi_dmac_prep_slave_sg;
++	dma_dev->device_config = axi_dmac_device_config;
+ 	dma_dev->device_prep_dma_cyclic = axi_dmac_prep_dma_cyclic;
+ 	dma_dev->device_prep_interleaved_dma = axi_dmac_prep_interleaved;
+ 	dma_dev->device_terminate_all = axi_dmac_terminate_all;
+-- 
+2.17.1
+

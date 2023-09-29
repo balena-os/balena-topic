@@ -1,5 +1,6 @@
 # Supported machines
 MACHINE ?= "tdpzu9"
+MACHINE ?= "lcbzu9"
 
 LICENSE_FLAGS_WHITELIST += "xilinx" 
 

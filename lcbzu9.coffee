@@ -3,9 +3,9 @@ deviceTypesCommon = require '@resin.io/device-types/common'
 
 module.exports =
 	version: 1
-	slug: 'tdpzu9'
+	slug: 'lcbzu9'
 	aliases: []
-	name: 'Topic Florida Plus (tdpzu9)'
+	name: 'Eurotec Lowpad (lcbzu9)'
 	arch: 'aarch64'
 	state: 'released'
 
@@ -19,11 +19,11 @@ module.exports =
 	options: [ networkOptions.group ]
 
 	yocto:
-		machine: 'tdpzu9'
+		machine: 'lcbzu9'
 		image: 'balena-image'
 		fstype: 'balenaos-img'
 		version: 'yocto-honister'
-		deployArtifact: 'balena-image-tdpzu9.balenaos-img'
+		deployArtifact: 'balena-image-lcbzu9.balenaos-img'
 
 	configuration:
 		config:
