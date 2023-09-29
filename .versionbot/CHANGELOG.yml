@@ -1,4 +1,19 @@
 - commits:
+    - subject: Add lcbzu9 machine
+      hash: 0fa27c6285cc70614c9bae05aa11a8befc5da248
+      body: |
+        Adding lcbzu9 machine
+      footer:
+        Changelog-entry: Add lcbzu9 machine
+        changelog-entry: Add lcbzu9 machine
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois Loubser
+      nested: []
+  version: 4.0.16+rev1
+  title: ""
+  date: 2023-09-29T07:33:23.102Z
+- commits:
     - subject: Update layers/meta-balena to 1c9c4813033186cefde51b9639edf7035f070c9d
       hash: d44ad4389efcf89abaca9a1c47e4948ad92657e8
       body: Update layers/meta-balena

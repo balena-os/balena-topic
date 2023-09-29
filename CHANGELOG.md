@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v4.0.16+rev1
+## (2023-09-29)
+
+* Add lcbzu9 machine [Francois Loubser]
+
 # v4.0.16
 ## (2023-09-28)
 
