@@ -27,3 +27,6 @@
 	path = contracts
 	url = https://github.com/balena-io/contracts.git
 	branch = master
+[submodule "layers/meta-lowpad"]
+	path = layers/meta-lowpad
+	url = https://github.com/topic-embedded-products/meta-lowpad.git
