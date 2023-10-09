@@ -1,4 +1,18 @@
 - commits:
+    - subject: add submodule for lowpad layer
+      hash: 89ecffc2ab14975c56fe28e63a05fb53ae7f1868
+      body: ""
+      footer:
+        Changelog-entry: add submodule for lowpad layer
+        changelog-entry: add submodule for lowpad layer
+        Signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+        signed-off-by: Francois Loubser <francois.loubser@topic.nl>
+      author: Francois Loubser
+      nested: []
+  version: 4.0.20+rev1
+  title: ""
+  date: 2023-10-09T08:10:01.473Z
+- commits:
     - subject: Update layers/meta-balena to dda681a93a1e2459925d36fabcb8bd4c6f68363a
       hash: a3c3f40e14ccf807cce04a84d4f4729cca9e4953
       body: Update layers/meta-balena

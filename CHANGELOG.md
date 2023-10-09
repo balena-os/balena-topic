@@ -1,6 +1,11 @@
 Change log
 -----------
 
+# v4.0.20+rev1
+## (2023-10-09)
+
+* add submodule for lowpad layer [Francois Loubser]
+
 # v4.0.20
 ## (2023-10-05)
 
