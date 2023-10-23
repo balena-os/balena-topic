@@ -20,10 +20,10 @@ module.exports =
 
 	yocto:
 		machine: 'lcbzu9'
-		image: 'balena-image'
+		image: 'balena-image-flasher'
 		fstype: 'balenaos-img'
 		version: 'yocto-honister'
-		deployArtifact: 'balena-image-lcbzu9.balenaos-img'
+		deployArtifact: 'balena-image-flasher-lcbzu9.balenaos-img'
 
 	configuration:
 		config:
