@@ -1,4 +1,31 @@
 - commits:
+    - subject: Update contracts to dd3614e53254562a7f93415de7e7aaaf73637a96
+      hash: 90e4c1b27f114a531a84631c55e9da062e31451a
+      body: Update contracts
+      footer:
+        Changelog-entry: Update contracts to dd3614e53254562a7f93415de7e7aaaf73637a96
+        changelog-entry: Update contracts to dd3614e53254562a7f93415de7e7aaaf73637a96
+      author: Self-hosted Renovate Bot
+      nested:
+        - commits:
+            - subject: "hw.device-type: Fix device type is_private flag for imx8mp-var-dart"
+              hash: 31176adf167c7f9754c0f7f01f92c759d12b8c2b
+              body: >
+                This was added by mistake as private when it is supposed to be a
+                public dt.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Florin Sarbu <florin@balena.io>
+                signed-off-by: Florin Sarbu <florin@balena.io>
+              author: Florin Sarbu
+          version: contracts-2.0.87
+          title: ""
+          date: 2023-12-29T14:04:58.033Z
+  version: 5.1.4+rev2
+  title: ""
+  date: 2023-12-29T17:07:02.471Z
+- commits:
     - subject: Update contracts to b0c1495877e23b27af209082e6cc9959b94fd541
       hash: 637ebb93cf5f345448bac3ec89968cb8c997f869
       body: Update contracts
