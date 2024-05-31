@@ -1,4 +1,28 @@
 - commits:
+    - subject: Update layers/meta-balena to 18061427fa1560355eb5911dc2c309024153680b
+      hash: 667777f6ecac7a94fc7ace0891dce027696ab0f1
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 18061427fa1560355eb5911dc2c309024153680b
+        changelog-entry: Update layers/meta-balena to 18061427fa1560355eb5911dc2c309024153680b
+      author: Self-hosted Renovate Bot
+      nested:
+        - commits:
+            - subject: "patch: Add Test Suite specific config for GHA"
+              hash: 4ecd7852f4eb0cd204e31cf3b8634c168782ce46
+              body: ""
+              footer:
+                Signed-off-by: Vipul Gupta (@vipulgupta2048) <vipulgupta2048@gmail.com>
+                signed-off-by: Vipul Gupta (@vipulgupta2048) <vipulgupta2048@gmail.com>
+              author: Vipul Gupta (@vipulgupta2048)
+              nested: []
+          version: meta-balena-5.3.12
+          title: ""
+          date: 2024-05-31T16:03:25.568Z
+  version: 5.3.12
+  title: ""
+  date: 2024-05-31T20:00:05.261Z
+- commits:
     - subject: Update layers/meta-balena to 15a8f82cb7722e22ba3abb6aea4e7618e133d7be
       hash: 2a77f3ec200d3916471a0a5f8e2357dc02882ca5
       body: Update layers/meta-balena
