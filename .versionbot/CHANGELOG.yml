@@ -1,4 +1,37 @@
 - commits:
+    - subject: Update layers/meta-balena to 6d6ebe2b54ad45236c5fe53c1cc046cf350efdbe
+      hash: 6f77b9a1b5d31a8b834d6531f64867094bfd1f01
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to 6d6ebe2b54ad45236c5fe53c1cc046cf350efdbe
+        changelog-entry: Update layers/meta-balena to 6d6ebe2b54ad45236c5fe53c1cc046cf350efdbe
+      author: Self-hosted Renovate Bot
+      nested:
+        - commits:
+            - subject: "kernel-balena: do not use cache for signed kernel modules"
+              hash: 389054e84c0b1fd382d737c39fb2bb02c2b3e9b2
+              body: >
+                On parallel builds that share a state cache there are mismatches
+                between
+
+                a signed kernel and modules. Avoid using the cache when building
+                signed
+
+                modules to avoid this mismatch.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Alex Gonzalez <alexg@balena.io>
+                signed-off-by: Alex Gonzalez <alexg@balena.io>
+              author: Alex Gonzalez
+              nested: []
+          version: meta-balena-5.3.19
+          title: ""
+          date: 2024-06-10T16:38:00.806Z
+  version: 5.3.19
+  title: ""
+  date: 2024-06-10T21:39:03.423Z
+- commits:
     - subject: Update layers/meta-balena to 7ae1b014fb202189c2003f35df578bf461a039eb
       hash: 43a432504e98b9164bafe2aa8bf06e9d07c11aa4
       body: Update layers/meta-balena
