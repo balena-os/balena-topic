@@ -1,4 +1,35 @@
 - commits:
+    - subject: Update balena-yocto-scripts to ba3794d7321f5a126dd19a840fe7109b5e0ee40d
+      hash: f014bc214a5497b5991da954c1acbb99b0bb4d9f
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to ba3794d7321f5a126dd19a840fe7109b5e0ee40d
+        changelog-entry: Update balena-yocto-scripts to ba3794d7321f5a126dd19a840fe7109b5e0ee40d
+      author: Self-hosted Renovate Bot
+      nested:
+        - commits:
+            - subject: Fix handling of empty test matrix input
+              hash: 727d8d275455361d3bc82b5aec392e9aaa08248b
+              body: |
+                Previously an empty test matrix would cause
+                an error in the workflow.
+
+                Added an if condition to check for a valid
+                test_suite property where applicable.
+              footer:
+                Change-type: patch
+                change-type: patch
+                Signed-off-by: Kyle Harding <kyle@balena.io>
+                signed-off-by: Kyle Harding <kyle@balena.io>
+              author: Kyle Harding
+              nested: []
+          version: balena-yocto-scripts-1.25.7
+          title: ""
+          date: 2024-07-16T20:10:01.990Z
+  version: 5.4.0+rev3
+  title: ""
+  date: 2024-07-16T23:59:51.568Z
+- commits:
     - subject: Update balena-yocto-scripts to 7c73eefe9aac870b5fd9050e5d429dd56b0ab4ff
       hash: 9e48032854ef105f2851bbecf3e1a5b7ba4b0c82
       body: Update balena-yocto-scripts
