@@ -16,6 +16,7 @@
 [submodule "layers/meta-xilinx"]
 	path = layers/meta-xilinx
 	url = https://github.com/Xilinx/meta-xilinx
+	branch = honister
 [submodule "layers/meta-topic"]
 	path = layers/meta-topic
 	url = https://github.com/topic-embedded-products/meta-topic.git
