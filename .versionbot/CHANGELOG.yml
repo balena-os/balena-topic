@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update layers/meta-rust to a5136be2ba408af1cc8afcde1c8e3d787dadd934
+      hash: c473844d24591fa5d4dd919879f55a7ff7c7bc4d
+      body: Update layers/meta-rust
+      footer:
+        Changelog-entry: Update layers/meta-rust to a5136be2ba408af1cc8afcde1c8e3d787dadd934
+        changelog-entry: Update layers/meta-rust to a5136be2ba408af1cc8afcde1c8e3d787dadd934
+      author: balena-renovate[bot]
+      nested: []
+  version: 6.0.6+rev3
+  title: ""
+  date: 2024-07-25T19:51:30.749Z
+- commits:
     - subject: Update balena-yocto-scripts to 34b4ee6c3aeabd21b9bb7b90536d837dbf465730
       hash: fc08d45b884dadf1f81935be02f34acdfb7ac65d
       body: Update balena-yocto-scripts
