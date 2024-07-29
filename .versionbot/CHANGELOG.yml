@@ -1,4 +1,29 @@
 - commits:
+    - subject: Update balena-yocto-scripts to aaf04d274adcfe3dc408f0bec4db51c199c131b4
+      hash: 9ea8ffafcc5a9ae9dcd0cd1214c93f04962095da
+      body: Update balena-yocto-scripts
+      footer:
+        Changelog-entry: Update balena-yocto-scripts to aaf04d274adcfe3dc408f0bec4db51c199c131b4
+        changelog-entry: Update balena-yocto-scripts to aaf04d274adcfe3dc408f0bec4db51c199c131b4
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Update Pin dependencies
+              hash: c48f1f984f2f22f49fc9aee3f1cc9883f8ca7ec5
+              body: |
+                Update actions/checkout
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: balena-yocto-scripts-1.25.12
+          title: ""
+          date: 2024-07-29T18:13:01.088Z
+  version: 6.0.6+rev5
+  title: ""
+  date: 2024-07-29T20:49:31.800Z
+- commits:
     - subject: Update balena-yocto-scripts to cdc09006ec79c82efe149abfc8eb8b932924ef89
       hash: 1107fe63f6aaa2254c288e947bc8405bb7883247
       body: Update balena-yocto-scripts
