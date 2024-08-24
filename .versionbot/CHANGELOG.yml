@@ -1,4 +1,29 @@
 - commits:
+    - subject: Update layers/meta-balena to a8d6ff62e7ab5bc1f8b1d0a6a8d06d6da84e11af
+      hash: cd368fe1e6463eadc1f23a0d354d48e7d0e2e6cc
+      body: Update layers/meta-balena
+      footer:
+        Changelog-entry: Update layers/meta-balena to a8d6ff62e7ab5bc1f8b1d0a6a8d06d6da84e11af
+        changelog-entry: Update layers/meta-balena to a8d6ff62e7ab5bc1f8b1d0a6a8d06d6da84e11af
+      author: balena-renovate[bot]
+      nested:
+        - commits:
+            - subject: Update balena-os/balena-yocto-scripts action to v1.25.25
+              hash: 811bd5df9d6e2b6911fb50183391af3a332e851b
+              body: |
+                Update balena-os/balena-yocto-scripts from v1.25.24 to v1.25.25
+              footer:
+                Change-type: patch
+                change-type: patch
+              author: balena-renovate[bot]
+              nested: []
+          version: meta-balena-6.0.12
+          title: ""
+          date: 2024-08-23T21:26:41.583Z
+  version: 6.0.12
+  title: ""
+  date: 2024-08-24T00:27:47.869Z
+- commits:
     - subject: Update balena-yocto-scripts to 58b4dd401dd6dd27262675b8061c7fddf5a593d4
       hash: 70615fc06a1919842413ef459b4ea5483df590e8
       body: Update balena-yocto-scripts
