@@ -1,6 +1,26 @@
 Change log
 -----------
 
+# v6.0.20+rev1
+## (2024-09-01)
+
+
+<details>
+<summary> Update balena-yocto-scripts to 654a03a6680847519b6d9a1de29c39eec2e0083b [balena-renovate[bot]] </summary>
+
+> ## balena-yocto-scripts-1.25.30
+> ### (2024-09-01)
+> 
+> * Update balena-os/leviathan digest to ff6a079 [balena-renovate[bot]]
+> 
+> ## balena-yocto-scripts-1.25.29
+> ### (2024-09-01)
+> 
+> * Restrict runners via yocto label, not 16cpu [Kyle Harding]
+> 
+
+</details>
+
 # v6.0.20
 ## (2024-08-31)
 
